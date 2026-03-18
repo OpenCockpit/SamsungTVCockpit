@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ "$1" = "remove" ]; then
+	echo "Removing Samsung TV Plus plugin from the system ..."
+	rm -rf /usr/lib/enigma2/python/Plugins/Extensions/SamsungTV > /dev/null 2>&1
+else
+	find /usr/lib/enigma2/python/Plugins/Extensions/SamsungTV -type f -name "*.pyc" -exec rm -f {} \; > /dev/null 2>&1
+fi
+exit 0

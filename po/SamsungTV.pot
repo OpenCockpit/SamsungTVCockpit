@@ -1,0 +1,181 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SamsungTV\n"
+"POT-Creation-Date: 2026-03-13 19:28+0100\n"
+"PO-Revision-Date: 2026-03-13 19:30+0100\n"
+"Last-Translator: xcentaurix\n"
+"Language-Team: xcentaurix\n"
+"Language: de_DE@formal\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.7\n"
+"X-Poedit-Basepath: ../src\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "service name"
+msgstr ""
+
+msgid "service reference"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "A silent download is in progress."
+msgstr ""
+
+msgid "picons"
+msgstr ""
+
+msgid "Fetching picons..."
+msgstr ""
+
+msgid "LiveTV update completed"
+msgstr ""
+
+msgid "Processing data..."
+msgstr ""
+
+msgid "Waiting for Channel: "
+msgstr ""
+
+msgid "Samsung TV Plus updating"
+msgstr ""
+
+msgid "Please wait..."
+msgstr ""
+
+msgid "Updating: Samsung TV Plus %s"
+msgstr ""
+
+msgid "The download is in progress. Exit now?"
+msgstr ""
+
+msgid ""
+"There is no data, it is possible that Samsung TV Plus is not available in "
+"your region"
+msgstr ""
+
+msgid "Channel Categories"
+msgstr ""
+
+msgid "Loading data... Please wait"
+msgstr ""
+
+msgid "Exit"
+msgstr ""
+
+msgid "TMDb Search"
+msgstr ""
+
+msgid "IMDb Search"
+msgstr ""
+
+msgid "MENU"
+msgstr ""
+
+msgid "Go forward one level including starting playback"
+msgstr ""
+
+msgid "Go back one level including exiting"
+msgstr ""
+
+msgid "Create or update Samsung TV Plus live bouquets"
+msgstr ""
+
+msgid "Go back one level"
+msgstr ""
+
+msgid "Open the plugin configuration screen"
+msgstr ""
+
+msgid "Search for information in %s"
+msgstr ""
+
+msgid "The Movie Database"
+msgstr ""
+
+msgid "the Internet Movie Database"
+msgstr ""
+
+msgid "Scroll the information field"
+msgstr ""
+
+msgid "Samsung TV Plus"
+msgstr ""
+
+msgid ""
+"The Samsung TV Plus bouquets in your channel list have been updated.\n"
+"\n"
+"They will now be rebuilt automatically every 5 hours."
+msgstr ""
+
+msgid "Update LiveTV Bouquet"
+msgstr ""
+
+msgid "LiveTV Bouquet last updated:"
+msgstr ""
+
+msgid "LiveTV Bouquet needs updating. Press GREEN."
+msgstr ""
+
+msgid "Create LiveTV Bouquet"
+msgstr ""
+
+msgid "Samsung TV Plus Setup"
+msgstr ""
+
+msgid "Region"
+msgstr ""
+
+msgid "Select the region for the channel list."
+msgstr ""
+
+msgid "LiveTV bouquet %s"
+msgstr ""
+
+msgid "Region for which LiveTV bouquet %s will be created."
+msgstr ""
+
+msgid "Picon type"
+msgstr ""
+
+msgid ""
+"Using service name picons means they will continue to work even if the "
+"service reference changes."
+msgstr ""
+
+msgid "Data location"
+msgstr ""
+
+msgid "Used for storing video cover graphics, etc."
+msgstr ""
+
+msgid "Remove picons"
+msgstr ""
+
+msgid "Remove LiveTV Bouquet"
+msgstr ""
+
+msgid "Do you want to resume this playback?"
+msgstr ""
+
+msgid "Resume position at %s"
+msgstr ""
+
+msgid "Browse channels, EPG, and on-demand content from Samsung TV Plus"
+msgstr ""
+
+msgid "Download Samsung TV Plus bouquet, picons and EPG"
+msgstr ""
+
+msgid "Silently download Samsung TV Plus"
+msgstr ""

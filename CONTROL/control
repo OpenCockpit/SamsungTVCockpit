@@ -1,0 +1,5 @@
+Description: SamsungTV
+Maintainer: xcentaurix
+Package: enigma2-plugin-extensions-samsungtv
+Version: 0.0.15
+Architecture: all
