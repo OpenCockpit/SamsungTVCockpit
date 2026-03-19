@@ -4,22 +4,26 @@ from Components.config import ConfigSelection, ConfigSubsection, config
 
 from . import _
 from .Variables import NUMBER_OF_LIVETV_BOUQUETS
+from Tools.CountryCodes import ISO3166
 
 
 # Regions available on Samsung TV Plus (via i.mjh.nz)
-REGION_NAMES = {
-    "at": "Austria",
-    "ca": "Canada",
-    "ch": "Switzerland",
-    "de": "Germany",
-    "es": "Spain",
-    "fr": "France",
-    "gb": "United Kingdom",
-    "in": "India",
-    "it": "Italy",
-    "kr": "South Korea",
-    "us": "United States",
-}
+REGIONS = [
+    "at",
+    "ca",
+    "ch",
+    "de",
+    "es",
+    "fr",
+    "gb",
+    "in",
+    "it",
+    "kr",
+    "us",
+]
+
+REGION_NAMES = {cc: country[0].split("(")[0].strip() for country in sorted(ISO3166) if (cc := country[1].lower()) in REGIONS}  # ISO3166 is sorted in English, sorted will sort by locale.
+
 
 TSIDS = {cc: f"{i:X}" for i, cc in enumerate(REGION_NAMES, 0x160)}
 
