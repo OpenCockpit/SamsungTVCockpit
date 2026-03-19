@@ -1,0 +1,7 @@
+#!/bin/sh
+echo "Cleaning up after SamsungTV removal..."
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/SamsungTV > /dev/null 2>&1
+rm -rf /media/hdd/SamsungTV > /dev/null 2>&1
+rm -rf /media/usb/SamsungTV > /dev/null 2>&1
+rm -rf /etc/enigma2/SamsungTV > /dev/null 2>&1
+exit 0
