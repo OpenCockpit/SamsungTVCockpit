@@ -1,5 +1,6 @@
-    <screen name="RakutenTV" position="fill" flags="wfNoBorder">
-		<ePixmap pixmap="extensions/rakutentv-backdrop.jpg" position="center,center" size="1200,720" zPosition="-1"/>
+<skin>
+    <screen name="SamsungTV" position="fill" flags="wfNoBorder">
+		<ePixmap pixmap="samsungtv-backdrop.jpg" position="0,0" size="e,1020" zPosition="-1"/>
 
 		<ePixmap position="70,170" size="615,750" pixmap="extensions/transblack.png" zPosition="1" alphatest="blend" transparent="1"/><!-- list background -->
 		<widget name="feedlist" position="70,170" size="615,728" enableWrapAround="1" zPosition="5" scrollbarMode="showOnDemand" transparent="1"/>
@@ -19,3 +20,4 @@
 		<widget name="poster" position="735,235" size="468,675" zPosition="5" cornerRadius="25" backgroundColor="black" transparent="1" alphatest="blend"/>
 		<widget name="info" position="1223,235" size="619,675" zPosition="5" font="Regular;27" transparent="1" />
 	</screen>
+</skin>
