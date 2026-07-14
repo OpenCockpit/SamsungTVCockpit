@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <skin>
-	<screen flags="wfNoBorder" name="SamsungTV" position="fill">
-		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTV/skin/images/samsungtv-backdrop.jpg" position="0,0" size="e,1020" zPosition="-1"/>
+	<screen flags="wfNoBorder" name="SamsungTVCockpit" position="fill">
+		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTVCockpit/skin/images/samsungtv-backdrop.jpg" position="0,0" size="e,1020" zPosition="-1"/>
 		<ePixmap alphatest="blend" pixmap="extensions/transblack.png" position="70,170" size="615,750" transparent="1" zPosition="1"/>
 		<widget enableWrapAround="1" name="feedlist" position="70,170" scrollbarMode="showOnDemand" size="615,728" transparent="1" zPosition="5"/>
 		<widget alphatest="blend" pixmap="extensions/transblack.png" position="70,950" render="Pixmap" size="615,57" source="updated" transparent="1" zPosition="1">

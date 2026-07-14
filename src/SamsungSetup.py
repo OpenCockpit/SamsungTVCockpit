@@ -1,0 +1,71 @@
+# Copyright (C) 2026 by xcentaurix
+
+import os
+import re
+
+from Components.ActionMap import HelpableActionMap
+from Components.config import config
+from Components.Sources.StaticText import StaticText
+from Screens.Setup import Setup
+
+from . import _
+from .SamsungTVConfig import NUMBER_OF_LIVETV_BOUQUETS
+from .SamsungTVDownload import Silent
+from .PiconFetcher import PiconFetcher
+from .Variables import BOUQUET_FILE
+
+
+class SamsungSetup(Setup):
+    def __init__(self, session):
+        Setup.__init__(self, session, setup="samsungtv")
+        if "key_yellow" not in self:
+            self["key_yellow"] = StaticText()
+            self["key_yellowActions"] = HelpableActionMap(self, ["ColorActions"], {
+                "yellow": (self.yellow, _("Remove picons")),
+            }, prio=1, description=_("Samsung TV Plus Setup Actions"))
+        if "key_blue" not in self:
+            self["key_blue"] = StaticText()
+            self["key_blueActions"] = HelpableActionMap(self, ["ColorActions"], {
+                "blue": (self.blue, _("Remove LiveTV Bouquet")),
+            }, prio=1, description=_("Samsung TV Plus Setup Actions"))
+        self.updateYellowButton()
+        self.updateBlueButton()
+        self.setTitle(_("Samsung TV Plus Setup"))
+
+    def createSetup(self):
+        configList = []
+        configList.append((_("Region"), config.plugins.samsungtv.region, _("Select the region for the channel list.")))
+        configList.append(("---",))
+        for n in range(1, NUMBER_OF_LIVETV_BOUQUETS + 1):
+            if n == 1 or getattr(config.plugins.samsungtv, "live_tv_region" + str(n - 1)).value:
+                configList.append((_("LiveTV bouquet %s") % n, getattr(config.plugins.samsungtv, "live_tv_region" + str(n)), _("Region for which LiveTV bouquet %s will be created.") % n))
+        configList.append(("---",))
+        configList.append((_("Picon type"), config.plugins.samsungtv.picons, _("Using service name picons means they will continue to work even if the service reference changes.")))
+        configList.append((_("Data location"), config.plugins.samsungtv.datalocation, _("Used for storing video cover graphics, etc.")))
+        self["config"].list = configList
+
+    def updateYellowButton(self):
+        if os.path.isdir(PiconFetcher(config.plugins.samsungtv.picons).pluginPiconDir):
+            self["key_yellow"].text = _("Remove picons")
+        else:
+            self["key_yellow"].text = ""
+
+    def updateBlueButton(self):
+        with open("/etc/enigma2/bouquets.tv", "r", encoding="utf-8") as f:
+            bouquets = f.read()
+        if "samsungtv" in bouquets:
+            self["key_blue"].text = _("Remove LiveTV Bouquet")
+        else:
+            self["key_blue"].text = ""
+
+    def yellow(self):
+        if self["key_yellow"].text:
+            PiconFetcher(config.plugins.samsungtv.picons).removeall()
+            self.updateYellowButton()
+
+    def blue(self):
+        if self["key_blue"].text:
+            Silent.stop()
+            from enigma import eDVBDB
+            eDVBDB.getInstance().removeBouquet(re.escape(BOUQUET_FILE) % ".*")
+            self.updateBlueButton()

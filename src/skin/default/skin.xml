@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <skin>
-	<screen flags="wfNoBorder" name="SamsungTV" position="0,0" resolution="1920,1080" size="1920,1080" title="Samsung TV Plus" transparent="0" zPosition="2">
-		<ePixmap alphatest="off" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTV/skin/images/samsungtv-backdrop.jpg" position="0,0" size="1920,1080" zPosition="-2"/>
+	<screen flags="wfNoBorder" name="SamsungTVCockpit" position="0,0" resolution="1920,1080" size="1920,1080" title="Samsung TV Plus" transparent="0" zPosition="2">
+		<ePixmap alphatest="off" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTVCockpit/skin/images/samsungtv-backdrop.jpg" position="0,0" size="1920,1080" zPosition="-2"/>
 		<eLabel backgroundColor="#16101113" cornerRadius="12" position="70,30" size="1780,90" zPosition="1"/>
-		<ePixmap alphatest="blend" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTV/skin/images/logo.png" position="70,30" scale="1" size="350,90" transparent="1" zPosition="5"/>
+		<ePixmap alphatest="blend" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTVCockpit/skin/images/logo.png" position="70,30" scale="1" size="350,90" transparent="1" zPosition="5"/>
 		<widget backgroundColor="#00000000" font="Regular;43" halign="right" position="e-400,48" render="Label" size="300,55" source="global.CurrentTime" transparent="1" zPosition="5">
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
@@ -23,9 +23,10 @@
 		</widget>
 		<widget font="Regular;25" halign="center" position="70,950" render="Label" size="615,50" source="updated" transparent="1" valign="center" zPosition="5"/>
 		<eLabel backgroundColor="#16101113" cornerRadius="12" position="0,e-60" size="1920,60" zPosition="1"/>
-		<widget addon="ColorButtonsSequence" alignment="left" backgroundColor="#00000000" connection="key_red,key_green,key_yellow,key_blue" font="Regular;33" position="224,1030" size="1694,42" spacing="10" textColors="key_red:#00ff0808,key_green:#0004c81b,key_yellow:#00edf506,key_blue:#00077cf5" transparent="1" zPosition="10"/>
-		<ePixmap alphatest="blend" backgroundColor="#00000000" pixmap="buttons/key_menu.png" position="30,1031" size="52,38" transparent="1" zPosition="2"/>
-		<ePixmap alphatest="blend" backgroundColor="#00000000" pixmap="buttons/key_help.png" position="82,1031" size="52,38" transparent="1" zPosition="2"/>
+		<eLabel backgroundColor="#00101113" cornerRadius="12" position="0,e-60" size="1920,60" zPosition="1"/>
+		<widget addon="ColorButtonsSequence" alignment="left" backgroundColor="#00000000" connection="key_red,key_green,key_yellow,key_blue" font="Regular;33" position="224,1030" size="1694,35" spacing="10" textColors="key_red:#00ff0808,key_green:#0004c81b,key_yellow:#00edf506,key_blue:#00077cf5" transparent="1" valign="center" zPosition="10"/>
+		<ePixmap alphatest="blend" backgroundColor="#00000000" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTVCockpit/skin/images/key_menu.png" position="30,1031" size="52,38" transparent="1" zPosition="2"/>
+		<ePixmap alphatest="blend" backgroundColor="#00000000" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTVCockpit/skin/images/key_help.png" position="82,1031" size="52,38" transparent="1" zPosition="2"/>
 	</screen>
 	<screen backgroundColor="#ff000000" flags="wfNoBorder" name="DownloadProgress" position="60,60" resolution="1920,1080" size="620,200">
 		<eLabel alphatest="blend" backgroundColor="#2d101214" cornerRadius="8" position="0,0" size="620,200" widgetBorderColor="#2d888888" widgetBorderWidth="2" zPosition="-1"/>

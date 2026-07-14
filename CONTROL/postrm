@@ -1,4 +1,4 @@
 #!/bin/sh
-echo "Cleaning up after SamsungTV removal..."
-rm -rf -- /usr/lib/enigma2/python/Plugins/Extensions/SamsungTV >/dev/null 2>&1
+echo "Cleaning up after SamsungTVCockpit removal..."
+rm -rf -- /usr/lib/enigma2/python/Plugins/Extensions/SamsungTVCockpit >/dev/null 2>&1
 exit 0

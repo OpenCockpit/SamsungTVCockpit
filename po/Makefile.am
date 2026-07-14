@@ -5,7 +5,7 @@
 # the directory name of the plugin.
 #
 
-DOMAIN = SamsungTV
+DOMAIN = SamsungTVCockpit
 installdir = $(libdir)/enigma2/python/Plugins/Extensions/$(DOMAIN)
 #GETTEXT=./pygettext.py
 GETTEXT=xgettext

@@ -1,8 +1,4 @@
-Package: enigma2-plugin-extensions-samsungtv
-Version: 1.5.0
-Plugin: SamsungTV
-Description: SamsungTV plugin for enigma2
-Section: base
-Priority: optional
+Package: enigma2-plugin-extensions-samsungtvcockpit
+Version: 1.7.6
 Maintainer: xcentaurix
 Architecture: all
