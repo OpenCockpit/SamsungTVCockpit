@@ -15,16 +15,15 @@ from enigma import eTimer
 from . import _
 from .SamsungTVConfig import REGION_NAMES, TSIDS, getselectedregions
 from .SamsungTVRequest import samsungRequest
-from .Variables import TIMER_FILE, BOUQUET_FILE, BOUQUET_NAME
+from .Variables import TIMER_FILE, BOUQUET_FILE, BOUQUET_NAME, CHANNELLIST_FILE, XMLTV_FILE
 from .CockpitTVDownload import TVDownloadBase, TVDownloadScreenMixin, TVDownloadSilentMixin, importXMLTVGuide
+from .Debug import logger
 
 
-# Data paths for ignore/replace lists
 DATA_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
 SAMSUNG_IGNORE = "samsungtvplus.ignore"
 SAMSUNG_REPLACE = "samsungtvplus.replace"
 
-# External EPG XML source
 EXT_SAMSUNG_XML = "https://i.mjh.nz/SamsungTVPlus/%s.xml"
 
 
@@ -33,13 +32,14 @@ class SamsungTVDownloadBase(TVDownloadBase):
 
     TIMER_FILE = TIMER_FILE
     BOUQUET_FILE = BOUQUET_FILE
+    CHANNELLIST_FILE = CHANNELLIST_FILE
+    XMLTV_FILE = XMLTV_FILE
     TSIDS = TSIDS
 
-    LOG_PREFIX = "SamsungTV Download"
     SILENT_IN_PROGRESS_TEXT = _("A silent download is in progress.")
     PICONS_LABEL = _("picons")
     FETCHING_PICONS_TEXT = _("Fetching picons...")
-    UPDATE_COMPLETED_TEXT = _("LiveTV update completed")
+    UPDATE_COMPLETED_TEXT = _("Live-TV update completed")
     PROCESSING_TEXT = _("Processing data...")
     WAITING_FOR_CHANNEL_TEXT = _("Waiting for Channel: ")
     EPGIMPORT_MISSING_TEXT = _("EPGImport plugin not found - please install it to get EPG data for Samsung TV Plus.")
@@ -75,6 +75,9 @@ class SamsungTVDownloadBase(TVDownloadBase):
     def _picons_config(self):
         return config.plugins.samsungtv.picons
 
+    def _configFolder(self):
+        return config.plugins.samsungtv.config_folder.value
+
     def _fetchChannels(self, cc):
         return samsungRequest.getChannels(cc)
 
@@ -90,10 +93,9 @@ class SamsungTVDownloadBase(TVDownloadBase):
             r.raise_for_status()
             xmltv_data = r.content
         except Exception as e:
-            print(f"[{self.LOG_PREFIX}] EPG fetch error for {cc}: {e}")
+            logger.error("EPG fetch error for %s: %s", cc, e)
             return
 
-        # Build channel ref mapping for EPG import
         channels_map = {}
         for cat in self.categories:
             if cat in self.channelsList:
@@ -102,7 +104,8 @@ class SamsungTVDownloadBase(TVDownloadBase):
                     channels_map[_id] = ref
                     channels_map[_id.lower()] = ref
 
-        if not importXMLTVGuide(self.epgcache, self.LOG_PREFIX, "/tmp/samsungtv-epg.xml", xmltv_data, channels_map):
+        path = os.path.join(self._configFolder(), self.XMLTV_FILE % cc)
+        if not importXMLTVGuide(self.epgcache, "Samsung TV Plus", path, xmltv_data, channels_map):
             self.epgimport_missing = True
 
     def _buildBouquetEntry(self, key, chitem):

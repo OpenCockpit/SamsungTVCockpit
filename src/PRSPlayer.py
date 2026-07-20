@@ -1,5 +1,18 @@
 # Copyright (C) 2026 by xcentaurix
 
+"""Shared VoD/live-stream MoviePlayer for the FAST-channel TV Cockpit plugins
+(Pluto TV, Rakuten TV, Samsung TV Plus, ...).
+
+Instantiate directly - no per-plugin subclass needed:
+
+    self.session.open(PRSPlayer, service=reference, sid=sid,
+                       resume_points=resumePointsInstance)
+
+*resume_points* is each plugin's own ResumePoints instance (see
+PlutoUtils/RakutenTVUtils/SamsungTVUtils) - passed in rather than imported
+here since each plugin persists its resume points to its own file.
+"""
+
 from Components.ActionMap import ActionMap
 from Components.config import config
 from Components.ServiceEventTracker import ServiceEventTracker
@@ -9,27 +22,24 @@ from Tools import Notifications
 from enigma import iPlayableService
 
 from . import _
-from .SamsungTVUtils import resumePointsInstance
 
 
-class Samsung_Player(MoviePlayer):
+class PRSPlayer(MoviePlayer):
 
     ENABLE_RESUME_SUPPORT = False
 
-    def __init__(self, session, service, sid):
+    def __init__(self, session, service, sid, resume_points):
         self.session = session
         self.mpservice = service
         self.id = sid
+        self._resume_points = resume_points
         MoviePlayer.__init__(self, self.session, service, sid)
-        self.end = False
-        self.started = False
         self.skinName = ["MoviePlayer"]
 
         self._event_tracker = ServiceEventTracker(
             screen=self,
             eventmap={
                 iPlayableService.evStart: self.__serviceStarted,
-                iPlayableService.evEOF: self.__evEOF,
             }
         )
 
@@ -52,14 +62,10 @@ class Samsung_Player(MoviePlayer):
     def doEofInternal(self, _playing):
         self.close()
 
-    def __evEOF(self):
-        self.end = True
-
     def __serviceStarted(self):
         service = self.session.nav.getCurrentService()
         seekable = service.seek()
-        self.started = True
-        last, length = resumePointsInstance.getResumePoint(self.id)
+        last, length = self._resume_points.getResumePoint(self.id)
         if last is None or seekable is None:
             return
         length = seekable.getLength() or (None, 0)
@@ -75,7 +81,7 @@ class Samsung_Player(MoviePlayer):
 
     def leavePlayer(self):
         self.is_closing = True
-        resumePointsInstance.setResumePoint(self.session, self.id)
+        self._resume_points.setResumePoint(self.session, self.id)
         self.close()
 
     def leavePlayerConfirmed(self, answer):

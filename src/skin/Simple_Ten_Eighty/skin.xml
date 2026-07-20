@@ -1,15 +1,15 @@
 <?xml version="1.0" ?>
 <skin>
 	<screen flags="wfNoBorder" name="SamsungTVCockpit" position="fill">
-		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTVCockpit/skin/images/samsungtv-backdrop.jpg" position="0,0" size="e,1020" zPosition="-1"/>
-		<ePixmap alphatest="blend" pixmap="extensions/transblack.png" position="70,170" size="615,750" transparent="1" zPosition="1"/>
+		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTVCockpit/skin/images/backdrop.jpg" position="0,0" size="e,1020" zPosition="-1"/>
+		<ePixmap alphatest="blend" pixmap="extensions/transblack.png" position="70,170" size="615,728" transparent="1" zPosition="1"/>
 		<widget enableWrapAround="1" name="feedlist" position="70,170" scrollbarMode="showOnDemand" size="615,728" transparent="1" zPosition="5"/>
-		<widget alphatest="blend" pixmap="extensions/transblack.png" position="70,950" render="Pixmap" size="615,57" source="updated" transparent="1" zPosition="1">
+		<widget alphatest="blend" pixmap="extensions/transblack.png" position="70,950" render="Pixmap" size="615,50" source="updated" transparent="1" zPosition="1">
 			<convert type="ConditionalShowHide"/>
 		</widget>
-		<widget font="Regular;25" halign="center" position="70,950" render="Label" size="615,57" source="updated" transparent="1" valign="center" zPosition="5"/>
+		<widget alphatest="blend" font="Regular;25" halign="center" position="70,950" render="Label" size="615,50" source="updated" transparent="1" valign="center" zPosition="5"/>
 		<panel name="PigLessTemplate"/>
-		<widget backgroundColor="#00000000" font="Regular;50" halign="center" name="loading" position="center,center" size="800,60" transparent="0" valign="center" zPosition="10"/>
+		<widget backgroundColor="black" font="Regular;50" halign="center" name="loading" position="center,center" size="800,60" transparent="0" valign="center" zPosition="10"/>
 		<widget alphatest="blend" pixmap="extensions/transblack.png" position="685,170" render="Pixmap" size="1165,750" source="vtitle" transparent="1" zPosition="0">
 			<convert type="ConditionalShowHide"/>
 		</widget>
@@ -21,7 +21,7 @@
 	<screen backgroundColor="#ff000000" flags="wfNoBorder" name="DownloadProgress" position="60,60" resolution="1920,1080" size="620,200">
 		<eLabel alphatest="blend" backgroundColor="#2d101214" cornerRadius="8" position="0,0" size="620,200" widgetBorderColor="#2d888888" widgetBorderWidth="2" zPosition="-1"/>
 		<widget backgroundColor="#000000" borderColor="black" borderWidth="1" font="Regular;25" foregroundColor="#dfdfdf" halign="left" name="action" noWrap="1" position="15,10" size="590,30" transparent="1" valign="center"/>
-		<widget alphatest="blend" backgroundColor="#1143495b" borderWidth="0" name="progress" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/PlutoTVCockpit/skin/images/progreso.png" position="15,100" size="590,12" zPosition="2"/>
+		<widget alphatest="blend" backgroundColor="#1143495b" borderWidth="0" name="progress" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/SamsungTVCockpit/skin/images/progress.png" position="15,100" size="590,12" zPosition="2"/>
 		<eLabel backgroundColor="#102a3b58" name="progess_background" position="15,100" size="590,12"/>
 		<widget backgroundColor="#000000" borderColor="black" borderWidth="1" font="Regular;22" foregroundColor="#dfdfdf" halign="center" name="wait" noWrap="1" position="15,65" size="590,30" transparent="1" valign="center"/>
 		<widget backgroundColor="#000000" borderColor="black" borderWidth="1" font="Regular;24" foregroundColor="#ffffff" halign="center" name="status" noWrap="1" position="15,120" size="590,30" transparent="1" valign="center"/>

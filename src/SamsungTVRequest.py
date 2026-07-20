@@ -12,17 +12,13 @@ from .Variables import USER_AGENT
 class SamsungTVRequest:
     """API handler for Samsung TV Plus channels and VOD content."""
 
-    # i.mjh.nz endpoints
     CHANNELS_JSON_URL = "https://i.mjh.nz/SamsungTVPlus/.channels.json"
     EPG_XML_URL = "https://i.mjh.nz/SamsungTVPlus/%s.xml"
 
-    # JMP2 proxy URL template
     JMP2_URL_TEMPLATE = "https://jmp2.uk/%s"
 
-    # Samsung TV Plus API for VOD content
     SAMSUNG_API_BASE = "https://api.samsungtv.com/browser/v2"
 
-    # Placeholder pattern for runtime URL resolution
     SAMSUNG_PATTERN = "SAMSUNG_SID_"
     SAMSUNG_PLACEHOLDER = f"https://{{{SAMSUNG_PATTERN}%s}}.m3u8"
 
@@ -61,7 +57,7 @@ class SamsungTVRequest:
         result = []
         for ch_id, ch_data in sorted(channels_dict.items(), key=lambda x: x[1].get("chno", 0)):
             if ch_data.get("license_url"):
-                continue  # skip DRM channels
+                continue
 
             slug = slug_template.format(id=ch_id) if slug_template else ch_id
             stream_url = self.JMP2_URL_TEMPLATE % slug + self._headerSuffix(app, region)
@@ -111,7 +107,6 @@ class SamsungTVRequest:
                 "covers": [{"url": ch.get("logo", "")}] if ch.get("logo") else [],
             })
 
-        # Sort categories alphabetically
         return sorted(categories.values(), key=lambda x: x["name"].casefold())
 
     def buildStreamURL(self, channel_id, region=None):

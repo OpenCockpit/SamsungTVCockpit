@@ -15,9 +15,9 @@ from .PiconFetcher import PiconFetcher
 from .Variables import BOUQUET_FILE
 
 
-class SamsungSetup(Setup):
+class SamsungTVSetup(Setup):
     def __init__(self, session):
-        Setup.__init__(self, session, setup="samsungtv")
+        Setup.__init__(self, session, setup="Samsung TV")
         if "key_yellow" not in self:
             self["key_yellow"] = StaticText()
             self["key_yellowActions"] = HelpableActionMap(self, ["ColorActions"], {
@@ -26,7 +26,7 @@ class SamsungSetup(Setup):
         if "key_blue" not in self:
             self["key_blue"] = StaticText()
             self["key_blueActions"] = HelpableActionMap(self, ["ColorActions"], {
-                "blue": (self.blue, _("Remove LiveTV Bouquet")),
+                "blue": (self.blue, _("Remove Live-TV Bouquet")),
             }, prio=1, description=_("Samsung TV Plus Setup Actions"))
         self.updateYellowButton()
         self.updateBlueButton()
@@ -38,10 +38,10 @@ class SamsungSetup(Setup):
         configList.append(("---",))
         for n in range(1, NUMBER_OF_LIVETV_BOUQUETS + 1):
             if n == 1 or getattr(config.plugins.samsungtv, "live_tv_region" + str(n - 1)).value:
-                configList.append((_("LiveTV bouquet %s") % n, getattr(config.plugins.samsungtv, "live_tv_region" + str(n)), _("Region for which LiveTV bouquet %s will be created.") % n))
+                configList.append((_("Live-TV bouquet %s") % n, getattr(config.plugins.samsungtv, "live_tv_region" + str(n)), _("Region for which Live-TV bouquet %s will be created.") % n))
         configList.append(("---",))
         configList.append((_("Picon type"), config.plugins.samsungtv.picons, _("Using service name picons means they will continue to work even if the service reference changes.")))
-        configList.append((_("Data location"), config.plugins.samsungtv.datalocation, _("Used for storing video cover graphics, etc.")))
+        configList.append((_("Data location"), config.plugins.samsungtv.config_folder, _("Location the configuration data are stored in.")))
         self["config"].list = configList
 
     def updateYellowButton(self):
@@ -54,7 +54,7 @@ class SamsungSetup(Setup):
         with open("/etc/enigma2/bouquets.tv", "r", encoding="utf-8") as f:
             bouquets = f.read()
         if "samsungtv" in bouquets:
-            self["key_blue"].text = _("Remove LiveTV Bouquet")
+            self["key_blue"].text = _("Remove Live-TV Bouquet")
         else:
             self["key_blue"].text = ""
 

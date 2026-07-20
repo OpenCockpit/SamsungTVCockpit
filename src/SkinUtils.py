@@ -7,19 +7,15 @@ from pathlib import Path
 from Tools.Directories import SCOPE_SKIN
 from Components.config import config
 from skin import loadSkin
-# from .Debug import logger
 
 
 def getSkinPath(file_name):
-    # logger.info("file_name: %s", file_name)
     primary_skin = config.skin.primary_skin.value.split("/")[0]
-    # logger.debug("primary_skin: %s", primary_skin)
     skin_path = Path(__file__).parent / "skin" / primary_skin / file_name
     if not os.path.isfile(skin_path):
         skin_path = Path(__file__).parent / "skin" / "default" / file_name
     if not os.path.isfile(skin_path):
         skin_path = Path(__file__).parent / "skin" / file_name
-    # logger.info("skin_path: %s", skin_path)
     return str(skin_path)
 
 

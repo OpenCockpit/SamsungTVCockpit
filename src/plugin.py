@@ -38,7 +38,7 @@ def Plugins(**_kwargs):
             name=_("SamsungTVCockpit"),
             where=PluginDescriptor.WHERE_PLUGINMENU,
             icon=PLUGIN_ICON,
-            description=_("Browse channels, EPG, and on-demand content from Samsung TV Plus"),
+            description=_("Live-TV-Bouquet Management"),
             fnc=system,
             needsRestart=True
         ),

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SamsungTV\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-08 14:57+0200\n"
-"PO-Revision-Date: 2026-07-08 14:57+0200\n"
+"POT-Creation-Date: 2026-07-20 15:35+0200\n"
+"PO-Revision-Date: 2026-07-20 15:38+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: xcentaurix\n"
 "Language: de_DE@formal\n"
@@ -14,57 +14,6 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../src\n"
 "X-Poedit-SearchPath-0: .\n"
-
-msgid "service name"
-msgstr "Servicename"
-
-msgid "service reference"
-msgstr "Servicereferenz"
-
-msgid "None"
-msgstr "Nichts"
-
-msgid "Yes"
-msgstr "Ja"
-
-msgid "No"
-msgstr "Nein"
-
-msgid "A silent download is in progress."
-msgstr "Ein Download ist im Hintergrund aktiv."
-
-msgid "picons"
-msgstr "Picons"
-
-msgid "Fetching picons..."
-msgstr "Picons werden heruntergeladen..."
-
-msgid "LiveTV update completed"
-msgstr "LiveTV-Update fertiggestellt"
-
-msgid "Processing data..."
-msgstr "Daten werden verarbeitet..."
-
-msgid "Waiting for Channel: "
-msgstr "Warten auf Kanal: "
-
-msgid "EPGImport plugin not found - please install it to get EPG data for Samsung TV Plus."
-msgstr "EPGImport Plugin wurde nicht gefunden - bitte installieren, um Samsung TV Plus EPG-Daten zu erhalten."
-
-msgid "The download is in progress. Exit now?"
-msgstr "Der Download ist im Gange. Jetzt beenden?"
-
-msgid "Samsung TV Plus updating"
-msgstr "Samsung TV Plus aktualisieren"
-
-msgid "Please wait..."
-msgstr "Bitte warten..."
-
-msgid "Updating: Samsung TV Plus %s"
-msgstr "Samsung TV Plus wird aktualisiert: %s"
-
-msgid "There is no data, it is possible that Samsung TV Plus is not available in your region"
-msgstr "Es gibt keine Daten, es ist möglich, dass Puto TV in deinem Land nicht verfügbar ist"
 
 msgid "Channel Categories"
 msgstr "Kanal-Kategorien"
@@ -114,6 +63,9 @@ msgstr "Informationsfeld scrollen"
 msgid "Samsung TV Plus"
 msgstr "Samsung TV Plus"
 
+msgid "There is no data, it is possible that Samsung TV Plus is not available in your region"
+msgstr "Es gibt keine Daten, es ist möglich, dass Puto TV in deinem Land nicht verfügbar ist"
+
 msgid ""
 "The Samsung TV Plus bouquets in your channel list have been updated.\n"
 "\n"
@@ -123,17 +75,65 @@ msgstr ""
 "\n"
 "Wird automatisch alle 3 Stunden aktualisiert."
 
-msgid "Update LiveTV Bouquet"
-msgstr "Update LiveTV-Bouquet"
+msgid "Update Live-TV Bouquet"
+msgstr "Update Live-TV-Bouquet"
 
-msgid "LiveTV Bouquet last updated:"
-msgstr "Letzter LiveTV-Bouquet Update:"
+msgid "Live-TV Bouquet last updated:"
+msgstr "Letzter Live-TV-Bouquet Update:"
 
-msgid "LiveTV Bouquet needs updating. Press GREEN."
-msgstr "LiveTV-Bouquet muss aktualisiert werden, drücke 'Grün'."
+msgid "Live-TV Bouquet needs updating. Press GREEN."
+msgstr "Live-TV-Bouquet muss aktualisiert werden."
 
-msgid "Create LiveTV Bouquet"
-msgstr "Erstelle LiveTV Bouquet"
+msgid "Create Live-TV Bouquet"
+msgstr "Erstelle Live-TV Bouquet"
+
+msgid "service name"
+msgstr "Servicename"
+
+msgid "service reference"
+msgstr "Servicereferenz"
+
+msgid "None"
+msgstr "Nichts"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nein"
+
+msgid "A silent download is in progress."
+msgstr "Ein Download ist im Hintergrund aktiv."
+
+msgid "picons"
+msgstr "Picons"
+
+msgid "Fetching picons..."
+msgstr "Picons werden heruntergeladen..."
+
+msgid "Live-TV update completed"
+msgstr "Live-TV-Update fertiggestellt"
+
+msgid "Processing data..."
+msgstr "Daten werden verarbeitet..."
+
+msgid "Waiting for Channel: "
+msgstr "Kanal: "
+
+msgid "EPGImport plugin not found - please install it to get EPG data for Samsung TV Plus."
+msgstr "EPGImport Plugin wurde nicht gefunden - bitte installieren, um Samsung TV Plus EPG-Daten zu erhalten."
+
+msgid "The download is in progress. Exit now?"
+msgstr "Der Download ist im Gange. Jetzt beenden?"
+
+msgid "Samsung TV Plus updating"
+msgstr "Samsung TV Plus aktualisieren"
+
+msgid "Please wait..."
+msgstr "Bitte warten..."
+
+msgid "Updating: Samsung TV Plus %s"
+msgstr "Samsung TV Plus wird aktualisiert: %s"
 
 msgid "Remove picons"
 msgstr "Picons entfernen"
@@ -141,8 +141,8 @@ msgstr "Picons entfernen"
 msgid "Samsung TV Plus Setup Actions"
 msgstr "Samsung TV Plus Konfiguration"
 
-msgid "Remove LiveTV Bouquet"
-msgstr "LiveTV Bouquet entfernen"
+msgid "Remove Live-TV Bouquet"
+msgstr "Live-TV Bouquet entfernen"
 
 msgid "Samsung TV Plus Setup"
 msgstr "Samsung TV Plus Konfiguration"
@@ -153,11 +153,11 @@ msgstr "Region"
 msgid "Select the region for the channel list."
 msgstr "Auswahl der Region für die Kanalliste"
 
-msgid "LiveTV bouquet %s"
-msgstr "LiveTV-Bouquet %s"
+msgid "Live-TV bouquet %s"
+msgstr "Live-TV-Bouquet %s"
 
-msgid "Region for which LiveTV bouquet %s will be created."
-msgstr "LiveTV-Region für die das Bouquet '%s' generiert wird."
+msgid "Region for which Live-TV bouquet %s will be created."
+msgstr "Live-TV-Region für die das Bouquet '%s' generiert wird."
 
 msgid "Picon type"
 msgstr "Picon-Typ"
@@ -168,20 +168,14 @@ msgstr "Servicenamen Picons können universell verwendet werden."
 msgid "Data location"
 msgstr "Daten-Verzeichnis"
 
-msgid "Used for storing video cover graphics, etc."
-msgstr "Wird zum Speichern von Video-Covern etc. verwendet."
-
-msgid "Do you want to resume this playback?"
-msgstr "Soll Playback fortgesetzt werden?"
-
-msgid "Resume position at %s"
-msgstr "Forsetzung an Position %s"
+msgid "Location the configuration data are stored in."
+msgstr "Verzeichnis der Konfigurationsdaten"
 
 msgid "SamsungTVCockpit"
 msgstr "Samsung TV Plus"
 
-msgid "Browse channels, EPG, and on-demand content from Samsung TV Plus"
-msgstr "Durchsuche Kanäle, EPG und On-Demand Content von Samsung TV Plus"
+msgid "Live-TV-Bouquet Management"
+msgstr "Letzter Live-TV-Bouquet Update:"
 
 msgid "Download Samsung TV Plus bouquet, picons and EPG"
 msgstr "Lade Samsung TV Bouquet, Picons und EPG"

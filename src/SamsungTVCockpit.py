@@ -23,11 +23,16 @@ from . import _
 from .SamsungTVConfig import getselectedregions
 from .SamsungTVRequest import samsungRequest
 from .SamsungTVDownload import SamsungTVDownload, Silent
-from .SamsungTVUtils import downloadPoster
+from .PRSUtils import PRSUtils
 from .Variables import TIMER_FILE, BOUQUET_FILE
-from .SamsungList import SamsungList
-from .SamsungSetup import SamsungSetup
-from .SamsungPlayer import Samsung_Player
+from .PRSList import PRSList
+from .SamsungTVSetup import SamsungTVSetup
+from .PRSPlayer import PRSPlayer
+from .Debug import logger
+
+_utils = PRSUtils(config.plugins.samsungtv)
+downloadPoster = _utils.downloadPoster
+resumePointsInstance = _utils.resumePoints
 
 
 class SamsungTVCockpit(Screen, HelpableScreen):
@@ -41,7 +46,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
         self.colors = parameters.get("SamsungTvColors", [])
 
         self.titlemenu = _("Channel Categories")
-        self["feedlist"] = SamsungList([])
+        self["feedlist"] = PRSList([])
         self["playlist"] = StaticText(self.titlemenu)
         self["loading"] = Label(_("Loading data... Please wait"))
         self["vtitle"] = StaticText()
@@ -170,7 +175,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
                 self["poster"].show()
                 self["posterBG"].show()
         except Exception as ex:
-            print("[SamsungTVCockpit] showPoster, ERROR", ex)
+            logger.error("showPoster: %s", ex)
 
     def getCategories(self):
         self.lvod = {}
@@ -275,7 +280,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
             string = f"4097:0:0:0:0:0:0:0:0:0:{quote(url)}:{quote(name)}"
             reference = eServiceReference(string)
             if "m3u8" in url.lower() or "jmp2" in url.lower() or "127.0.0.1" in url:
-                self.session.open(Samsung_Player, service=reference, sid=sid)
+                self.session.open(PRSPlayer, service=reference, sid=sid, resume_points=resumePointsInstance)
 
     def green(self):
         self.session.openWithCallback(self.endupdateLive, SamsungTVDownload)
@@ -290,13 +295,13 @@ class SamsungTVCockpit(Screen, HelpableScreen):
             with open(TIMER_FILE, "r", encoding="utf-8") as f:
                 last = float(f.read().replace("\n", "").replace("\r", ""))
             updated = strftime(" %x %H:%M", localtime(int(last)))
-            self["key_green"].text = _("Update LiveTV Bouquet")
-            self["updated"].text = _("LiveTV Bouquet last updated:") + updated
+            self["key_green"].text = _("Update Live-TV Bouquet")
+            self["updated"].text = _("Live-TV Bouquet last updated:") + updated
         elif "samsungtv" in bouquets:
-            self["key_green"].text = _("Update LiveTV Bouquet")
-            self["updated"].text = _("LiveTV Bouquet needs updating. Press GREEN.")
+            self["key_green"].text = _("Update Live-TV Bouquet")
+            self["updated"].text = _("Live-TV Bouquet needs updating. Press GREEN.")
         else:
-            self["key_green"].text = _("Create LiveTV Bouquet")
+            self["key_green"].text = _("Create Live-TV Bouquet")
             self["updated"].text = ""
 
     def exit(self, *_args, **_kwargs):
@@ -322,7 +327,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
             if config.plugins.samsungtv.region.value != self.region:
                 self.initialise()
                 self.getCategories()
-        self.session.openWithCallback(loadSetupCallback, SamsungSetup)
+        self.session.openWithCallback(loadSetupCallback, SamsungTVSetup)
 
     def close(self, *_args, **_kwargs):
         if self.updatebutton in Silent.afterUpdate:
