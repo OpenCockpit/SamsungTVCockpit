@@ -11,6 +11,7 @@ from Components.ProgressBar import ProgressBar
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from enigma import eTimer
+from twisted.internet import threads
 
 from . import _
 from .SamsungTVConfig import REGION_NAMES, TSIDS, getselectedregions
@@ -26,6 +27,8 @@ SAMSUNG_REPLACE = "samsungtvplus.replace"
 
 EXT_SAMSUNG_XML = "https://i.mjh.nz/SamsungTVPlus/%s.xml"
 
+EPG_REFRESH_MINUTES = 90
+
 
 class SamsungTVDownloadBase(TVDownloadBase):
     downloadActive = False
@@ -36,6 +39,7 @@ class SamsungTVDownloadBase(TVDownloadBase):
     XMLTV_FILE = XMLTV_FILE
     TSIDS = TSIDS
 
+    FINALIZE_DELAY = 3
     SILENT_IN_PROGRESS_TEXT = _("A silent download is in progress.")
     PICONS_LABEL = _("picons")
     FETCHING_PICONS_TEXT = _("Fetching picons...")
@@ -108,9 +112,26 @@ class SamsungTVDownloadBase(TVDownloadBase):
         if not importXMLTVGuide(self.epgcache, "Samsung TV Plus", path, xmltv_data, channels_map):
             self.epgimport_missing = True
 
+    def _refreshEpgOnly(self, cc):
+        """Re-fetch and re-import EPG for *cc* without touching channels/picons/bouquet.
+
+        Rebuilds channelsList/categories/usedServiceIds first purely so
+        _importGuide's channels_map lines up with the live bouquet - SID
+        allocation in buildM3U is deterministic from the channel list, so this
+        reproduces the same SIDs the last full update wrote. Nothing gets
+        written to eDVBDB or the picon folder here.
+        """
+        self.tsid = self.TSIDS.get(cc, "0")
+        self.usedServiceIds = set()
+        self.channelsList.clear()
+        self.categories.clear()
+        for channel in sorted(self._fetchChannels(cc), key=lambda x: x["number"]):
+            self.buildM3U(channel)
+        self._importGuide(cc)
+
     def _buildBouquetEntry(self, key, chitem):
         ch_sid, _ch_hash, ch_name, ch_logourl, _id = self.channelsList[key][chitem]
-        stream_url = samsungRequest.buildStreamURL(_id, self.bouquetCC).replace(":", "%3a")
+        stream_url = samsungRequest.buildStreamURL(_id).replace(":", "%3a")
         ref = f"4097:0:1:{ch_sid}:{self.tsid}:1:2:0:0:0"
         return ref, stream_url, ch_name, ch_logourl
 
@@ -161,7 +182,7 @@ class SamsungTVDownload(TVDownloadScreenMixin, SamsungTVDownloadBase, Screen):
         self["action"].text = _("Updating: Samsung TV Plus %s") % cc.upper()
 
     def noCategories(self):
-        self.session.openWithCallback(self.exitOk, MessageBox, _("There is no data, it is possible that Samsung TV Plus is not available in your region"), type=MessageBox.TYPE_ERROR, timeout=10)
+        self.session.open(MessageBox, _("There is no data, it is possible that Samsung TV Plus is not available in your region"), type=MessageBox.TYPE_ERROR, timeout=10)
 
     def _restartSilentTimer(self):
         Silent.stop()
@@ -179,6 +200,32 @@ class DownloadSilent(TVDownloadSilentMixin, SamsungTVDownloadBase):
         SamsungTVDownloadBase.__init__(self, silent=True)
         self.timer = eTimer()
         self.timer.timeout.get().append(self.download)
+        self.epgTimer = eTimer()
+        self.epgTimer.timeout.get().append(self.epgRefresh)
+
+    def start(self, fromSessionStart=False):
+        TVDownloadSilentMixin.start(self, fromSessionStart)
+        self.epgTimer.startLongTimer(EPG_REFRESH_MINUTES * 60)
+
+    def stop(self):
+        TVDownloadSilentMixin.stop(self)
+        self.epgTimer.stop()
+
+    def epgRefresh(self):
+        self.epgTimer.startLongTimer(EPG_REFRESH_MINUTES * 60)
+        if not self._isDownloadActive():
+            threads.deferToThread(self._epgRefreshThread)
+
+    def _epgRefreshThread(self):
+        if self._isDownloadActive():
+            return
+        self._setDownloadActive(True)
+        try:
+            locations = [x for x in self._selectedLocations() if x] or [self._defaultLocation()]
+            for cc in locations:
+                self._refreshEpgOnly(cc)
+        finally:
+            self._setDownloadActive(False)
 
 
 Silent = DownloadSilent()

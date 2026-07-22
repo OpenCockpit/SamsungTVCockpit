@@ -5,7 +5,6 @@ import time
 from Components.config import config
 import requests
 
-from .SamsungTVConfig import pickForwardIP
 from .Variables import USER_AGENT
 
 
@@ -60,7 +59,7 @@ class SamsungTVRequest:
                 continue
 
             slug = slug_template.format(id=ch_id) if slug_template else ch_id
-            stream_url = self.JMP2_URL_TEMPLATE % slug + self._headerSuffix(app, region)
+            stream_url = self.JMP2_URL_TEMPLATE % slug + self._headerSuffix(app)
 
             result.append({
                 "_id": ch_id,
@@ -109,32 +108,24 @@ class SamsungTVRequest:
 
         return sorted(categories.values(), key=lambda x: x["name"].casefold())
 
-    def buildStreamURL(self, channel_id, region=None):
+    def buildStreamURL(self, channel_id):
         """Build stream URL for a channel using JMP2 proxy."""
-        region = region or config.plugins.samsungtv.region.value
         app = self._getChannelsJson()
         if not app:
             return ""
         slug_template = app.get("slug", "")
         slug = slug_template.format(id=channel_id) if slug_template else channel_id
-        return self.JMP2_URL_TEMPLATE % slug + self._headerSuffix(app, region)
+        return self.JMP2_URL_TEMPLATE % slug + self._headerSuffix(app)
 
     @staticmethod
-    def _headerSuffix(app, region=None):
+    def _headerSuffix(app):
         """Build the '#Key=Value&...' suffix eServiceMP3 reads as extra HTTP headers.
 
         The upstream CDN behind the jmp2.uk redirect rejects requests whose
         User-Agent doesn't match what the official app sends, so the
         required header from the channels feed must travel with the URL.
-
-        Also appends X-Forwarded-For for *region* if mapped, in case jmp2.uk
-        (or whatever it proxies to) honors the header for geo-decisions -
-        unlike PlutoTV/RakutenTV, this goes to a third-party proxy rather
-        than the platform's own API, so there's no guarantee it's honored.
         """
         headers = dict(app.get("headers") or {})
-        if region and (ip := pickForwardIP(region)):
-            headers["X-Forwarded-For"] = ip
         parts = []
         for key, value in headers.items():
             if key.lower() == "user-agent":
@@ -150,8 +141,6 @@ class SamsungTVRequest:
             param = {}
         now = time.time()
         region = region or config.plugins.samsungtv.region.value
-        if "X-Forwarded-For" not in header and (ip := pickForwardIP(region)):
-            header = {**header, "X-Forwarded-For": ip}
         if region not in self.requestCache:
             self.requestCache[region] = {}
         if url in self.requestCache[region] and self.requestCache[region][url][1] > (now - life):

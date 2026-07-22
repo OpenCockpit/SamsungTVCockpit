@@ -175,7 +175,7 @@ msgid "SamsungTVCockpit"
 msgstr "Samsung TV Plus"
 
 msgid "Live-TV-Bouquet Management"
-msgstr "Letzter Live-TV-Bouquet Update:"
+msgstr "Live-TV-Bouquet Management"
 
 msgid "Download Samsung TV Plus bouquet, picons and EPG"
 msgstr "Lade Samsung TV Bouquet, Picons und EPG"

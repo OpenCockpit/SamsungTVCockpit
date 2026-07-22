@@ -8,6 +8,7 @@ from . import _
 from .SamsungTVRequest import samsungRequest
 from .SamsungTVDownload import SamsungTVDownload, Silent
 from .SamsungTVCockpit import SamsungTVCockpit
+from .PlaybackWatchdog import start as startPlaybackWatchdog
 from .Variables import PLUGIN_ICON
 from .SkinUtils import loadPluginSkin
 from .Version import VERSION
@@ -21,6 +22,7 @@ if findSkinScreen("SamsungTVCockpit") is None:
 def sessionstart(reason, session, **_kwargs):  # pylint: disable=unused-argument
     logger.info("+++ Version: %s starts...", VERSION)
     Silent.init(session)
+    startPlaybackWatchdog(session)
     threads.deferToThread(samsungRequest._getChannelsJson)
 
 
