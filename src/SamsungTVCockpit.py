@@ -11,6 +11,7 @@ from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
+from Screens.ChoiceBox import ChoiceBox
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -20,11 +21,12 @@ from enigma import BT_KEEP_ASPECT_RATIO, BT_SCALE, BT_HALIGN_CENTER, BT_VALIGN_C
 from skin import parameters
 
 from . import _
-from .SamsungTVConfig import getselectedregions
+from .SamsungTVConfig import REGION_NAMES, getselectedregions
 from .SamsungTVRequest import samsungRequest
 from .SamsungTVDownload import SamsungTVDownload, Silent
 from .PRSUtils import PRSUtils
-from .Variables import TIMER_FILE, BOUQUET_FILE
+from .CockpitTVDownload import loadNoDataLocations
+from .Variables import TIMER_FILE, NODATA_FILE, BOUQUET_FILE
 from .PRSList import PRSList
 from .SamsungTVSetup import SamsungTVSetup
 from .PRSPlayer import PRSPlayer
@@ -183,7 +185,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
 
     def getCategoriesCallback(self, categories):
         if not categories:
-            self.session.open(MessageBox, _("There is no data, it is possible that Samsung TV Plus is not available in your region"), type=MessageBox.TYPE_ERROR, timeout=10)
+            self.session.open(MessageBox, _("There is no data for %s. It may be caused by geo-blocking, or Samsung TV Plus may not be available in your region.") % REGION_NAMES.get(self.region, self.region), type=MessageBox.TYPE_ERROR, timeout=10)
         else:
             for category in categories:
                 self.buildlist(category)
@@ -283,15 +285,36 @@ class SamsungTVCockpit(Screen, HelpableScreen):
                 self.session.open(PRSPlayer, service=reference, sid=sid, resume_points=resumePointsInstance)
 
     def green(self):
-        self.session.openWithCallback(self.endupdateLive, SamsungTVDownload)
+        locations = [x for x in getselectedregions() if x] or [config.plugins.samsungtv.region.value]
+        if len(locations) <= 1:
+            self.session.openWithCallback(self.endupdateLive, SamsungTVDownload)
+            return
+        choices = [(_("All"), None)] + [(REGION_NAMES.get(cc, cc), cc) for cc in locations]
+        self.session.openWithCallback(
+            self.greenChoice,
+            ChoiceBox,
+            title=_("Select a Live-TV bouquet to update"),
+            list=choices,
+            keys=[]
+        )
+
+    def greenChoice(self, result=None):
+        if result is None:
+            return
+        self.session.openWithCallback(self.endupdateLive, SamsungTVDownload, locations=[result[1]] if result[1] else None)
 
     def endupdateLive(self, _ret=None):
-        self.session.openWithCallback(self.updatebutton, MessageBox, _("The Samsung TV Plus bouquets in your channel list have been updated.\n\nThey will now be rebuilt automatically every 5 hours."), type=MessageBox.TYPE_INFO, timeout=10)
+        if _ret:
+            regions = ", ".join(REGION_NAMES.get(cc, cc) for cc in _ret)
+            self.session.openWithCallback(self.updatebutton, MessageBox, _("The Samsung TV Plus bouquets for %s in your channel list have been updated.\n\nThey will now be rebuilt automatically every 5 hours.") % regions, type=MessageBox.TYPE_INFO, timeout=10)
+        else:
+            self.updatebutton()
 
     def updatebutton(self, _ret=None):
         with open("/etc/enigma2/bouquets.tv", "r", encoding="utf-8") as f:
             bouquets = f.read()
-        if fileExists(TIMER_FILE) and all(((BOUQUET_FILE % cc) in bouquets) for cc in [x for x in getselectedregions() if x]):
+        nodata = loadNoDataLocations(NODATA_FILE)
+        if fileExists(TIMER_FILE) and all(((BOUQUET_FILE % cc) in bouquets or cc in nodata) for cc in [x for x in getselectedregions() if x]):
             with open(TIMER_FILE, "r", encoding="utf-8") as f:
                 last = float(f.read().replace("\n", "").replace("\r", ""))
             updated = strftime(" %x %H:%M", localtime(int(last)))

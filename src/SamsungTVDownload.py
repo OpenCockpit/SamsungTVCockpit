@@ -16,7 +16,7 @@ from twisted.internet import threads
 from . import _
 from .SamsungTVConfig import REGION_NAMES, TSIDS, getselectedregions
 from .SamsungTVRequest import samsungRequest
-from .Variables import TIMER_FILE, BOUQUET_FILE, BOUQUET_NAME, CHANNELLIST_FILE, XMLTV_FILE
+from .Variables import TIMER_FILE, NODATA_FILE, BOUQUET_FILE, BOUQUET_NAME, CHANNELLIST_FILE, XMLTV_FILE
 from .CockpitTVDownload import TVDownloadBase, TVDownloadScreenMixin, TVDownloadSilentMixin, importXMLTVGuide
 from .Debug import logger
 
@@ -34,6 +34,7 @@ class SamsungTVDownloadBase(TVDownloadBase):
     downloadActive = False
 
     TIMER_FILE = TIMER_FILE
+    NODATA_FILE = NODATA_FILE
     BOUQUET_FILE = BOUQUET_FILE
     CHANNELLIST_FILE = CHANNELLIST_FILE
     XMLTV_FILE = XMLTV_FILE
@@ -48,8 +49,8 @@ class SamsungTVDownloadBase(TVDownloadBase):
     WAITING_FOR_CHANNEL_TEXT = _("Waiting for Channel: ")
     EPGIMPORT_MISSING_TEXT = _("EPGImport plugin not found - please install it to get EPG data for Samsung TV Plus.")
 
-    def __init__(self, silent=False):
-        TVDownloadBase.__init__(self, silent)
+    def __init__(self, silent=False, locations=None):
+        TVDownloadBase.__init__(self, silent, locations)
         self.ignore_list = self._get_ignore_list()
 
     @staticmethod
@@ -163,12 +164,12 @@ class SamsungTVDownload(TVDownloadScreenMixin, SamsungTVDownloadBase, Screen):
 
     EXIT_CONFIRM_TEXT = _("The download is in progress. Exit now?")
 
-    def __init__(self, session):
+    def __init__(self, session, locations=None):
         self.session = session
         Screen.__init__(self, session)
         self.skinName = "DownloadProgress"
         self.title = _("Samsung TV Plus updating")
-        SamsungTVDownloadBase.__init__(self)
+        SamsungTVDownloadBase.__init__(self, locations=locations)
         self.total = 0
         self["progress"] = ProgressBar()
         self["action"] = Label()
@@ -181,8 +182,8 @@ class SamsungTVDownload(TVDownloadScreenMixin, SamsungTVDownloadBase, Screen):
     def updateAction(self, cc=""):
         self["action"].text = _("Updating: Samsung TV Plus %s") % cc.upper()
 
-    def noCategories(self):
-        self.session.open(MessageBox, _("There is no data, it is possible that Samsung TV Plus is not available in your region"), type=MessageBox.TYPE_ERROR, timeout=10)
+    def noCategories(self, cc=""):
+        self.session.open(MessageBox, _("There is no data for %s. It may be caused by geo-blocking, or Samsung TV Plus may not be available in your region.") % REGION_NAMES.get(cc, cc), type=MessageBox.TYPE_ERROR, timeout=10)
 
     def _restartSilentTimer(self):
         Silent.stop()
