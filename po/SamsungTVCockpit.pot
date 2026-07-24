@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SamsungTV\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-20 15:35+0200\n"
-"PO-Revision-Date: 2026-07-20 15:38+0200\n"
+"POT-Creation-Date: 2026-07-23 13:43+0200\n"
+"PO-Revision-Date: 2026-07-23 13:44+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: xcentaurix\n"
 "Language: de_DE@formal\n"
@@ -64,14 +64,17 @@ msgid "Samsung TV Plus"
 msgstr ""
 
 msgid ""
-"There is no data, it is possible that Samsung TV Plus is not available in "
-"your region"
+"There is no data for %s. It may be caused by geo-blocking, or Samsung TV "
+"Plus may not be available in your region."
 msgstr ""
 
 msgid ""
-"The Samsung TV Plus bouquets in your channel list have been updated.\n"
+"The Samsung TV Plus bouquets for %s in your channel list have been updated.\n"
 "\n"
 "They will now be rebuilt automatically every 5 hours."
+msgstr ""
+
+msgid "All"
 msgstr ""
 
 msgid "Update Live-TV Bouquet"
@@ -168,10 +171,25 @@ msgid ""
 "service reference changes."
 msgstr ""
 
+msgid "Automatic update check"
+msgstr ""
+
+msgid ""
+"Automatically check for a newer package update when the plugin GUI is opened."
+msgstr ""
+
 msgid "Data location"
 msgstr ""
 
 msgid "Location the configuration data are stored in."
+msgstr ""
+
+msgid "The package has been installed. Restart Enigma2 now to load the update?"
+msgstr ""
+
+msgid ""
+"A newer SamsungTVCockpit package (%s) is available. Do you want to install "
+"it now?"
 msgstr ""
 
 msgid "SamsungTVCockpit"

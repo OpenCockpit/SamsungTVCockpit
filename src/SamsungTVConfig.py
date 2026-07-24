@@ -31,6 +31,7 @@ config.plugins.samsungtv = ConfigSubsection()
 config.plugins.samsungtv.region = ConfigSelection(default="de", choices=list(REGION_NAMES.items()))
 config.plugins.samsungtv.picons = ConfigSelection(default="snp", choices=[("snp", _("service name")), ("srp", _("service reference")), ("", _("None"))])
 config.plugins.samsungtv.silentmode = ConfigSelection(default="yes", choices=[("yes", _("Yes")), ("no", _("No"))])
+config.plugins.samsungtv.auto_update_check = ConfigSelection(default="yes", choices=[("yes", _("Yes")), ("no", _("No"))])
 config.plugins.samsungtv.config_folder = ConfigDirectory(default="/etc/enigma2")
 
 
