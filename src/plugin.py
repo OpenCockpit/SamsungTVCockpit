@@ -7,6 +7,7 @@ from skin import findSkinScreen
 
 from .PluginUpgrade import checkPluginUpdateAndOpen
 from . import _
+from . import ConfigInit  # noqa: F401, pylint: disable=unused-import
 from .SamsungTVRequest import samsungRequest
 from .SamsungTVDownload import SamsungTVDownload, Silent
 from .SamsungTVCockpit import SamsungTVCockpit

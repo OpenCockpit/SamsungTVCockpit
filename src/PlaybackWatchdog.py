@@ -21,13 +21,13 @@ the same regardless of whether tracks exist. sVideoType and audioTracks() are
 the fields eServiceMP3 actually populates (confirmed against real usage in
 Screens/ServiceInfo.py and Screens/AudioSelection.py).
 
-Scoped to Samsung TV Plus channels only (TSID match against SamsungTVConfig's
+Scoped to Samsung TV Plus channels only (TSID match against ConfigInit's
 own range) - other services, including real DVB tuning, never reach this check.
 """
 
 from enigma import iPlayableService, iServiceInformation
 
-from .SamsungTVConfig import TSIDS
+from .ConfigInit import TSIDS
 from .Debug import logger
 
 _SAMSUNG_TSIDS = set(TSIDS.values())

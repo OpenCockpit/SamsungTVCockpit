@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SamsungTV\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-27 16:07+0200\n"
-"PO-Revision-Date: 2026-07-27 16:09+0200\n"
+"POT-Creation-Date: 2026-08-19 14:17+0200\n"
+"PO-Revision-Date: 2026-08-19 14:18+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: xcentaurix\n"
 "Language: de_DE@formal\n"
@@ -14,6 +14,21 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../src\n"
 "X-Poedit-SearchPath-0: .\n"
+
+msgid "service name"
+msgstr ""
+
+msgid "service reference"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
 
 msgid "Channel Categories"
 msgstr ""
@@ -90,21 +105,6 @@ msgid "Live-TV Bouquet needs updating. Press GREEN."
 msgstr ""
 
 msgid "Create Live-TV Bouquet"
-msgstr ""
-
-msgid "service name"
-msgstr ""
-
-msgid "service reference"
-msgstr ""
-
-msgid "None"
-msgstr ""
-
-msgid "Yes"
-msgstr ""
-
-msgid "No"
 msgstr ""
 
 msgid "A silent download is in progress."
@@ -185,6 +185,12 @@ msgid "Data location"
 msgstr ""
 
 msgid "Location the configuration data are stored in."
+msgstr ""
+
+msgid "Log level"
+msgstr ""
+
+msgid "Select the level for debug logging."
 msgstr ""
 
 msgid "SamsungTVCockpit"

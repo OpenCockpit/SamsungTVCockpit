@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SamsungTV\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-27 16:07+0200\n"
-"PO-Revision-Date: 2026-07-27 16:09+0200\n"
+"POT-Creation-Date: 2026-08-19 14:17+0200\n"
+"PO-Revision-Date: 2026-08-19 14:18+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: xcentaurix\n"
 "Language: de_DE@formal\n"
@@ -14,6 +14,21 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../src\n"
 "X-Poedit-SearchPath-0: .\n"
+
+msgid "service name"
+msgstr "Servicename"
+
+msgid "service reference"
+msgstr "Servicereferenz"
+
+msgid "None"
+msgstr "Nichts"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nein"
 
 msgid "Channel Categories"
 msgstr "Kanal-Kategorien"
@@ -93,21 +108,6 @@ msgstr "Live-TV-Bouquet muss aktualisiert werden."
 msgid "Create Live-TV Bouquet"
 msgstr "Erstelle Live-TV Bouquet"
 
-msgid "service name"
-msgstr "Servicename"
-
-msgid "service reference"
-msgstr "Servicereferenz"
-
-msgid "None"
-msgstr "Nichts"
-
-msgid "Yes"
-msgstr "Ja"
-
-msgid "No"
-msgstr "Nein"
-
 msgid "A silent download is in progress."
 msgstr "Ein Download ist im Hintergrund aktiv."
 
@@ -182,6 +182,12 @@ msgstr "Daten-Verzeichnis"
 
 msgid "Location the configuration data are stored in."
 msgstr "Verzeichnis der Konfigurationsdaten"
+
+msgid "Log level"
+msgstr "Log-Stufe"
+
+msgid "Select the level for debug logging."
+msgstr "Auswahl der Debug-Log-Stufe"
 
 msgid "SamsungTVCockpit"
 msgstr "Samsung TV Plus"

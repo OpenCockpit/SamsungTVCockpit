@@ -14,7 +14,7 @@ from enigma import eTimer
 from twisted.internet import threads
 
 from . import _
-from .SamsungTVConfig import REGION_NAMES, TSIDS, getselectedregions
+from .ConfigInit import REGION_NAMES, TSIDS, getselectedregions
 from .SamsungTVRequest import samsungRequest
 from .Variables import TIMER_FILE, NODATA_FILE, BOUQUET_FILE, BOUQUET_NAME, CHANNELLIST_FILE, XMLTV_FILE
 from .CockpitTVDownload import TVDownloadBase, TVDownloadScreenMixin, TVDownloadSilentMixin, importXMLTVGuide
