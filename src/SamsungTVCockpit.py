@@ -1,4 +1,5 @@
 # Copyright (C) 2026 by xcentaurix
+# License: GNU General Public License v3.0
 
 import os
 from time import strftime, gmtime, localtime
@@ -7,6 +8,7 @@ from twisted.internet import threads
 
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
+from Components.Button import Button
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.ScrollLabel import ScrollLabel
@@ -52,13 +54,13 @@ class SamsungTVCockpit(Screen, HelpableScreen):
         self["playlist"] = StaticText(self.titlemenu)
         self["loading"] = Label(_("Loading data... Please wait"))
         self["vtitle"] = StaticText()
-        self["key_red"] = StaticText(_("Exit"))
-        self["key_yellow"] = StaticText()
+        self["key_red"] = Button(_("Exit"))
+        self["key_yellow"] = Button()
         self.mdb = isPluginInstalled("tmdb") and "tmdb" or isPluginInstalled("IMDb") and "imdb"
         self.yellowLabel = _("TMDb Search") if self.mdb == "tmdb" else (_("IMDb Search") if self.mdb else "")
-        self["key_green"] = StaticText()
+        self["key_green"] = Button()
         self["updated"] = StaticText()
-        self["key_menu"] = StaticText(_("MENU"))
+        self["key_menu"] = Button(_("MENU"))
         self["poster"] = Pixmap()
         self["posterBG"] = Label()
         self["info"] = ScrollLabel()

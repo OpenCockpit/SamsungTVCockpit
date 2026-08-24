@@ -1,3 +1,7 @@
+# Copyright (C) 2018-2026 by xcentaurix
+# License: GNU General Public License v3.0
+
+
 import os
 from Tools.Directories import resolveFilename, SCOPE_CONFIG
 from .Version import PLUGIN

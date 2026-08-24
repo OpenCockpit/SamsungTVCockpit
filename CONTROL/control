@@ -1,5 +1,5 @@
 Package: enigma2-plugin-extensions-samsungtvcockpit
-Version: 1.12.2
+Version: 1.13.3
 Maintainer: xcentaurix
 Architecture: all
 Depends: enigma2-plugin-extensions-epgimport
