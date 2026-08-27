@@ -190,7 +190,7 @@ msgid "Select the level for debug logging."
 msgstr "Auswahl der Debug-Log-Stufe"
 
 msgid "SamsungTVCockpit"
-msgstr "Samsung TV Plus"
+msgstr "SamsungTVCockpit"
 
 msgid "Live-TV-Bouquet Management"
 msgstr "Live-TV-Bouquet Management"
