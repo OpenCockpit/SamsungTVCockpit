@@ -1,0 +1,965 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SamsungTV\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-19 14:17+0200\n"
+"PO-Revision-Date: 2026-09-01 20:37+0300\n"
+"Last-Translator: tomppaa\n"
+"Language-Team: tomppaa <http://www.huoltovalikko.com/>\n
+"Language: fi_FI@formal\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.9\n"
+"X-Poedit-Basepath: ../src\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "service name"
+msgstr "kanavan nimi"
+
+msgid "service reference"
+msgstr "kanavan referenssi"
+
+msgid "None"
+msgstr "Ei mitään"
+
+msgid "Yes"
+msgstr "Kyllä"
+
+msgid "No"
+msgstr "Ei"
+
+msgid "Channel Categories"
+msgstr "Kanavaluokat"
+
+msgid "Loading data... Please wait"
+msgstr "Ladataan tietoja... Odota"
+
+msgid "Exit"
+msgstr "Poistu"
+
+msgid "TMDb Search"
+msgstr "TMDB Haku"
+
+msgid "IMDb Search"
+msgstr "IMDb Haku"
+
+msgid "MENU"
+msgstr "MENU"
+
+msgid "Go forward one level including starting playback"
+msgstr "Siirry taso eteenpäin ja aloita toisto"
+
+msgid "Go back one level including exiting"
+msgstr "Siirry taso taaksepäin ja poistu"
+
+msgid "Create or update Samsung TV Plus live bouquets"
+msgstr "Luo tai päivitä Samsung TV:n live suosikkilistat"
+
+msgid "Go back one level"
+msgstr "Siirry taso taaksepäin"
+
+msgid "Open the plugin configuration screen"
+msgstr "Avaa lisäosan asetusten näyttö"
+
+msgid "Search for information in %s"
+msgstr "Etsi tietoa kohteesta %s"
+
+msgid "The Movie Database"
+msgstr "The Movie Database"
+
+msgid "the Internet Movie Database"
+msgstr "the Internet Movie Database"
+
+msgid "Scroll the information field"
+msgstr "Vieritä tietokenttää"
+
+msgid "Samsung TV Plus"
+msgstr "Samsung TV Plus"
+
+msgid ""
+"There is no data for %s. It may be caused by geo-blocking, or Samsung TV "
+"Plus may not be available in your region."
+msgstr ""
+"Kohteelle %s ei löytynyt tietoja. Tämä voi johtua maarajoituksesta, tai Samsung TV"
+"Plus ei ole saatavilla alueellasi."
+
+msgid "All"
+msgstr "Kaikki"
+
+msgid "Select a Live-TV bouquet to update"
+msgstr "Valitse päivitettävä Live-TV -suosikkilista"
+
+msgid ""
+"The Samsung TV Plus bouquets for %s in your channel list have been updated.\n"
+"\n"
+"They will now be rebuilt automatically every 5 hours."
+msgstr ""
+"Kanavalistasi Samsung TV Plus suosikkilistat kohteelle %s on päivitetty.\n"
+"\n"
+"Ne luodaan nyt uudelleen automaattisesti 5 tunnin välein."
+
+msgid "Update Live-TV Bouquet"
+msgstr "Päivitä Live-TV -suosikkilista"
+
+msgid "Live-TV Bouquet last updated:"
+msgstr "Live-TV -suosikkilista päivitetty viimeksi:"
+
+msgid "Live-TV Bouquet needs updating. Press GREEN."
+msgstr "Live-TV -suosikkilista tarvitsee päivityksen. Paina VIHREÄÄ."
+
+msgid "Create Live-TV Bouquet"
+msgstr "Luo Live-TV -suosikkilista"
+
+msgid "A silent download is in progress."
+msgstr "Lataus on käynnissä taustalla."
+
+msgid "picons"
+msgstr "kanavalogot"
+
+msgid "Fetching picons..."
+msgstr "Haetaan kanavalogoja..."
+
+msgid "Live-TV update completed"
+msgstr "Live-TV:n päivitys valmis"
+
+msgid "Processing data..."
+msgstr "Käsitellään tietoja..."
+
+msgid "Waiting for Channel: "
+msgstr "Odotetaan kanavaa: "
+
+msgid "EPGImport plugin not found - please install it to get EPG data for Samsung TV Plus."
+msgstr "EPGImport-lisäosaa ei löytynyt – asenna se saadaksesi ohjelmaopastiedot (EPG) Samsung TV Plus:lle."
+
+msgid "The download is in progress. Exit now?"
+msgstr "Lataus käynnissä. Poistutaanko nyt?"
+
+msgid "Samsung TV Plus updating"
+msgstr "Samsung TV päivittyy"
+
+msgid "Please wait..."
+msgstr "Odota..."
+
+msgid "Updating: Samsung TV Plus %s"
+msgstr "Päivitetään: Samsung TV Plus %s"
+
+msgid "Remove picons"
+msgstr "Poista kanavalogot"
+
+msgid "Samsung TV Plus Setup Actions"
+msgstr "Samsung TV -asetustoiminnot"
+
+msgid "Remove Live-TV Bouquet"
+msgstr "Poista Live-TV -suosikkilista"
+
+msgid "Samsung TV Plus Setup"
+msgstr "Samsung TV Plus -asetukset"
+
+msgid "Region"
+msgstr "Alue"
+
+msgid "Select the region for the channel list."
+msgstr "Valitse kanavalistan alue."
+
+msgid "Live-TV bouquet %s"
+msgstr "Live-TV -suosikkilista %s"
+
+msgid "Region for which Live-TV bouquet %s will be created."
+msgstr "Alue, jolle Live-TV -suosikkilista %s luodaan."
+
+msgid "Picon type"
+msgstr "Kanavalogon tyyppi"
+
+msgid "Using service name picons means they will continue to work even if the service reference changes."
+msgstr "Kanavan nimeen perustuvien kanavalogojen käyttö tarkoittaa, että ne toimivat edelleen, vaikka kanavan referenssi muuttuisi."
+
+msgid "Automatic update check"
+msgstr "Automaattinen päivitystarkistus"
+
+msgid "Automatically check for a newer package update when the plugin GUI is opened."
+msgstr "Tarkista automaattisesti uudempi pakettipäivitys, kun lisäosan käyttöliittymä avataan."
+
+msgid "Data location"
+msgstr "Tietojen tallennuspaikka"
+
+msgid "Location the configuration data are stored in."
+msgstr "Sijainti, johon konfiguraatiotiedot tallennetaan."
+
+msgid "Log level"
+msgstr "Lokitaso"
+
+msgid "Select the level for debug logging."
+msgstr "Valitse debug-lokituksen taso."
+
+msgid "SamsungTVCockpit"
+msgstr "SamsungTVCockpit"
+
+msgid "Live-TV-Bouquet Management"
+msgstr "Live-TV -suosikkilistan hallinta"
+
+msgid "Download Samsung TV Plus bouquet, picons and EPG"
+msgstr "Lataa SamsungTV Plus suosikkilista ja kanavalogot"
+
+msgid "Silently download Samsung TV Plus"
+msgstr "Lataa Samsung TV Plus taustalla"
+
+msgid "Afghanistan"
+msgstr "Afghanistani"
+
+msgid "Aland Islands"
+msgstr "Ahvenanmaa"
+
+msgid "Albania"
+msgstr "Albania"
+
+msgid "Algeria"
+msgstr "Algeria"
+
+msgid "American Samoa"
+msgstr "Amerikan Samoa"
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Angola"
+msgstr "Angolan tasavalta"
+
+msgid "Anguilla"
+msgstr "Anguilla"
+
+msgid "Antarctica"
+msgstr "Antarctica"
+
+msgid "Antigua and Barbuda"
+msgstr "Antigua ja Barbuda"
+
+msgid "Argentina"
+msgstr "Argentina"
+
+msgid "Armenia"
+msgstr "Armenian tasavalta"
+
+msgid "Aruba"
+msgstr "Aruba"
+
+msgid "Australia"
+msgstr "Austraalia"
+
+msgid "Austria"
+msgstr "Itävalta"
+
+msgid "Azerbaijan"
+msgstr "Azerbaijan"
+
+msgid "Bahamas"
+msgstr "Bahamasaaret"
+
+msgid "Bahrain"
+msgstr "Bahrain"
+
+msgid "Bangladesh"
+msgstr "Bangladesh"
+
+msgid "Barbados"
+msgstr "Barbados"
+
+msgid "Belarus"
+msgstr "Valkovenäjä"
+
+msgid "Belgium"
+msgstr "Belgia"
+
+msgid "Belize"
+msgstr "Belize"
+
+msgid "Benin"
+msgstr "Benin"
+
+msgid "Bermuda"
+msgstr "Bermuda"
+
+msgid "Bhutan"
+msgstr "Bhutan"
+
+msgid "Bolivia (Plurinational State of)"
+msgstr "Bolivia"
+
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr "Bonaire, Sint Eustatius ja Saba"
+
+msgid "Bosnia and Herzegovina"
+msgstr "Bosnia and Herzegovina"
+
+msgid "Botswana"
+msgstr "Botswana"
+
+msgid "Bouvet Island"
+msgstr "Bouvet saaret"
+
+msgid "Brazil"
+msgstr "Brasilia"
+
+msgid "British Indian Ocean Territory"
+msgstr "Brittiläinen Intian valtameren alue"
+
+msgid "Brunei Darussalam"
+msgstr "Brunei Darussalam"
+
+msgid "Bulgaria"
+msgstr "Bulgaria"
+
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+msgid "Burundi"
+msgstr "Burundi"
+
+msgid "Cabo Verde"
+msgstr "Cabo Verde"
+
+msgid "Cambodia"
+msgstr "Cambodia"
+
+msgid "Cameroon"
+msgstr "Cameroon"
+
+msgid "Canada"
+msgstr "Kanada"
+
+msgid "Cayman Islands"
+msgstr "Cayman saaret"
+
+msgid "Central African Republic"
+msgstr "Keski Afrikka"
+
+msgid "Chad"
+msgstr "Chad"
+
+msgid "Chile"
+msgstr "Chile"
+
+msgid "China"
+msgstr "Kiina"
+
+msgid "Christmas Island"
+msgstr "Joulusaari"
+
+msgid "Cocos (Keeling) Islands"
+msgstr "Cocos (Keeling) Saari"
+
+msgid "Colombia"
+msgstr "Colombia"
+
+msgid "Comoros"
+msgstr "Comoros"
+
+msgid "Congo"
+msgstr "Congo"
+
+msgid "Congo (Democratic Republic of the)"
+msgstr "Kongo"
+
+msgid "Cook Islands"
+msgstr "Kokkaus saari"
+
+msgid "Costa Rica"
+msgstr "Costa Rica"
+
+msgid "Cote d'Ivoire"
+msgstr "Norsunluurannikko"
+
+msgid "Croatia"
+msgstr "Kroatia"
+
+msgid "Cuba"
+msgstr "Kuuba"
+
+msgid "Curacao"
+msgstr "Curacao"
+
+msgid "Cyprus"
+msgstr "Kypros"
+
+msgid "Czechia"
+msgstr "Tšekki"
+
+msgid "Denmark"
+msgstr "Tanska"
+
+msgid "Djibouti"
+msgstr "Djibouti"
+
+msgid "Dominica"
+msgstr "Dominica"
+
+msgid "Dominican Republic"
+msgstr "Dominican Republic"
+
+msgid "Ecuador"
+msgstr "Ecuadori"
+
+msgid "Egypt"
+msgstr "Egypti"
+
+msgid "El Salvador"
+msgstr "El Salvadori"
+
+msgid "Equatorial Guinea"
+msgstr "Equatorial Guinea"
+
+msgid "Eritrea"
+msgstr "Eritrea"
+
+msgid "Estonia"
+msgstr "Viro"
+
+msgid "Ethiopia"
+msgstr "Ethiopia"
+
+msgid "Falkland Islands (Malvinas)"
+msgstr "Falklandinsaaret"
+
+msgid "Faroe Islands"
+msgstr "Färsaaret"
+
+msgid "Fiji"
+msgstr "Fiji"
+
+msgid "Finland"
+msgstr "Suomi"
+
+msgid "France"
+msgstr "Ranska"
+
+msgid "French Guiana"
+msgstr "Ranska"
+
+msgid "French Polynesia"
+msgstr "Ranskan Polynesia"
+
+msgid "French Southern Territories"
+msgstr "Ranskan eteläiset alueet"
+
+msgid "Gabon"
+msgstr "Gabon"
+
+msgid "Gambia"
+msgstr "Gambia"
+
+msgid "Georgia"
+msgstr "Georgia"
+
+msgid "Germany"
+msgstr "Saksa"
+
+msgid "Ghana"
+msgstr "Ghana"
+
+msgid "Gibraltar"
+msgstr "Gibraltari"
+
+msgid "Greece"
+msgstr "Kreikka"
+
+msgid "Greenland"
+msgstr "Grönlanti"
+
+msgid "Grenada"
+msgstr "Grenada"
+
+msgid "Guadeloupe"
+msgstr "Guadeloupe"
+
+msgid "Guam"
+msgstr "Guam"
+
+msgid "Guatemala"
+msgstr "Guatemala"
+
+msgid "Guernsey"
+msgstr "Guernsey"
+
+msgid "Guinea"
+msgstr "Guinea"
+
+msgid "Guinea-Bissau"
+msgstr "Guinea-Bissau"
+
+msgid "Guyana"
+msgstr "Guyana"
+
+msgid "Haiti"
+msgstr "Haiti"
+
+msgid "Heard Island and McDonald Islands"
+msgstr "Heard saari ja McDonald saari"
+
+msgid "Holy See"
+msgstr "Holy See"
+
+msgid "Honduras"
+msgstr "Honduras"
+
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+msgid "Hungary"
+msgstr "Unkari"
+
+msgid "Iceland"
+msgstr "Irlanti"
+
+msgid "India"
+msgstr "Intia"
+
+msgid "Indonesia"
+msgstr "Indonesia"
+
+msgid "Iran (Islamic Republic of)"
+msgstr "Iran"
+
+msgid "Iraq"
+msgstr "Iraq"
+
+msgid "Ireland"
+msgstr "Irlanti"
+
+msgid "Isle of Man"
+msgstr "Mansaari"
+
+msgid "Israel"
+msgstr "Israel"
+
+msgid "Italy"
+msgstr "Italia"
+
+msgid "Jamaica"
+msgstr "Jamaica"
+
+msgid "Japan"
+msgstr "Japani"
+
+msgid "Jersey"
+msgstr "Jersey"
+
+msgid "Jordan"
+msgstr "Jordan"
+
+msgid "Kazakhstan"
+msgstr "Kazakhstan"
+
+msgid "Kenya"
+msgstr "Kenia"
+
+msgid "Kiribati"
+msgstr "Kiribati"
+
+msgid "Korea (Democratic People's Republic of)"
+msgstr "Korea (Democratic People's Republic of)"
+
+msgid "Korea (Republic of)"
+msgstr "Korea (Republic of)"
+
+msgid "Kuwait"
+msgstr "Kuwait"
+
+msgid "Kyrgyzstan"
+msgstr "Kyrgyzstan"
+
+msgid "Lao People's Democratic Republic"
+msgstr "Laos"
+
+msgid "Latvia"
+msgstr "Latvia"
+
+msgid "Lebanon"
+msgstr "Libanoni"
+
+msgid "Lesotho"
+msgstr "Lesotho"
+
+msgid "Liberia"
+msgstr "Liberia"
+
+msgid "Libya"
+msgstr "Libya"
+
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+msgid "Lithuania"
+msgstr "Liettua"
+
+msgid "Luxembourg"
+msgstr "Luxemburg"
+
+msgid "Macao"
+msgstr "Macao"
+
+msgid "Macedonia (the former Yugoslav Republic of)"
+msgstr "Makedonia"
+
+msgid "Madagascar"
+msgstr "Madagascar"
+
+msgid "Malawi"
+msgstr "Malawi"
+
+msgid "Malaysia"
+msgstr "Malaysia"
+
+msgid "Maldives"
+msgstr "Maldives"
+
+msgid "Mali"
+msgstr "Mali"
+
+msgid "Malta"
+msgstr "Malta"
+
+msgid "Marshall Islands"
+msgstr "Marshallsaaret"
+
+msgid "Martinique"
+msgstr "Martinique"
+
+msgid "Mauritania"
+msgstr "Mauritania"
+
+msgid "Mauritius"
+msgstr "Mauritius"
+
+msgid "Mayotte"
+msgstr "Mayotte"
+
+msgid "Mexico"
+msgstr "Meksiko"
+
+msgid "Micronesia (Federated States of)"
+msgstr "Micronesia (Federated States of)"
+
+msgid "Moldova (Republic of)"
+msgstr "Moldova (Republic of)"
+
+msgid "Monaco"
+msgstr "Monaco"
+
+msgid "Mongolia"
+msgstr "Mongolia"
+
+msgid "Montenegro"
+msgstr "Montenegro"
+
+msgid "Montserrat"
+msgstr "Montserrat"
+
+msgid "Morocco"
+msgstr "Morocco"
+
+msgid "Mozambique"
+msgstr "Mozambique"
+
+msgid "Myanmar"
+msgstr "Myanmar"
+
+msgid "Namibia"
+msgstr "Namibia"
+
+msgid "Nauru"
+msgstr "Nauru"
+
+msgid "Nepal"
+msgstr "Nepali"
+
+msgid "Netherlands"
+msgstr "Alankomaat"
+
+msgid "New Caledonia"
+msgstr "Uusi Kaledonia"
+
+msgid "New Zealand"
+msgstr "Uusi Seelanti"
+
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+msgid "Niger"
+msgstr "Nigeria"
+
+msgid "Nigeria"
+msgstr "Nigeria"
+
+msgid "Niue"
+msgstr "Niue"
+
+msgid "Norfolk Island"
+msgstr "Norfolkinsaari"
+
+msgid "Northern Mariana Islands"
+msgstr "Northern Mariana saaret"
+
+msgid "Norway"
+msgstr "Norja"
+
+msgid "Oman"
+msgstr "Oman"
+
+msgid "Pakistan"
+msgstr "Pakistani"
+
+msgid "Palau"
+msgstr "Palau"
+
+msgid "Palestine, State of"
+msgstr "Palestine"
+
+msgid "Panama"
+msgstr "Panama"
+
+msgid "Papua New Guinea"
+msgstr "Papua Uusi Guinea"
+
+msgid "Paraguay"
+msgstr "Paraguay"
+
+msgid "Peru"
+msgstr "Peru"
+
+msgid "Philippines"
+msgstr "Filippiinit"
+
+msgid "Pitcairn"
+msgstr "Pitcairn"
+
+msgid "Poland"
+msgstr "Puola"
+
+msgid "Portugal"
+msgstr "Portugali"
+
+msgid "Puerto Rico"
+msgstr "Puerto Rico"
+
+msgid "Qatar"
+msgstr "Qatar"
+
+msgid "Reunion"
+msgstr "Reunion"
+
+msgid "Romania"
+msgstr "Romania"
+
+msgid "Russian Federation"
+msgstr "Venäjä"
+
+msgid "Rwanda"
+msgstr "Rwanda"
+
+msgid "Saint Barthelemy"
+msgstr "Pyhä Barthelemy"
+
+msgid "Saint Helena, Ascension and Tristan da Cunha"
+msgstr "Pyhä Helena, Ascension ja Tristan da Cunha"
+
+msgid "Saint Kitts and Nevis"
+msgstr "Saint Kitts and Nevis"
+
+msgid "Saint Lucia"
+msgstr "Saint Lucia"
+
+msgid "Saint Martin (French part)"
+msgstr "Saint Martin (French part)"
+
+msgid "Saint Pierre and Miquelon"
+msgstr "Saint Pierre and Miquelon"
+
+msgid "Saint Vincent and the Grenadines"
+msgstr "Saint Vincent and the Grenadines"
+
+msgid "Samoa"
+msgstr "Samoa"
+
+msgid "San Marino"
+msgstr "San Marino"
+
+msgid "Sao Tome and Principe"
+msgstr "Sao Tome and Principe"
+
+msgid "Saudi Arabia"
+msgstr "Saudi Arabia"
+
+msgid "Senegal"
+msgstr "Senegal"
+
+msgid "Serbia"
+msgstr "Serbia"
+
+msgid "Seychelles"
+msgstr "Seychelles"
+
+msgid "Sierra Leone"
+msgstr "Sierra Leone"
+
+msgid "Singapore"
+msgstr "Singapore"
+
+msgid "Sint Maarten (Dutch part)"
+msgstr "Sint Maarten (Dutch part)"
+
+msgid "Slovakia"
+msgstr "Slovakia"
+
+msgid "Slovenia"
+msgstr "Slovenia"
+
+msgid "Solomon Islands"
+msgstr "Solomon Islands"
+
+msgid "Somalia"
+msgstr "Somalia"
+
+msgid "South Africa"
+msgstr "Etelä Afrikka"
+
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "Etelä-Georgia ja Eteläiset Sandwichsaaret"
+
+msgid "South Sudan"
+msgstr "Etelä Sudan"
+
+msgid "Spain"
+msgstr "Espanja"
+
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+msgid "Sudan"
+msgstr "Sudan"
+
+msgid "Suriname"
+msgstr "Suriname"
+
+msgid "Svalbard and Jan Mayen"
+msgstr "Huippuvuoret ja Jan Mayen"
+
+msgid "Swaziland"
+msgstr "Swaziland"
+
+msgid "Sweden"
+msgstr "Ruotsi"
+
+msgid "Switzerland"
+msgstr "Sveitsi"
+
+msgid "Syrian Arab Republic"
+msgstr "Syrian Arab Republic"
+
+msgid "Taiwan"
+msgstr "Taiwan"
+
+msgid "Tajikistan"
+msgstr "Tajikistan"
+
+msgid "Tanzania, United Republic of"
+msgstr "Tanzania, United Republic of"
+
+msgid "Thailand"
+msgstr "Thaimaa"
+
+msgid "Timor-Leste"
+msgstr "Timor-Leste"
+
+msgid "Togo"
+msgstr "Togo"
+
+msgid "Tokelau"
+msgstr "Tokelau"
+
+msgid "Tonga"
+msgstr "Tonga"
+
+msgid "Trinidad and Tobago"
+msgstr "Trinidad and Tobago"
+
+msgid "Tunisia"
+msgstr "Tunisia"
+
+msgid "Turkey"
+msgstr "Turkki"
+
+msgid "Turkmenistan"
+msgstr "Turkki"
+
+msgid "Turks and Caicos Islands"
+msgstr "Turkki ja Caicos Islands"
+
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+msgid "Uganda"
+msgstr "Uganda"
+
+msgid "Ukraine"
+msgstr "Ukraina"
+
+msgid "United Arab Emirates"
+msgstr "United Arab Emirates"
+
+msgid "United Kingdom"
+msgstr "Ison-Britannia"
+
+msgid "United States of America"
+msgstr "Yhdysvallat"
+
+msgid "United States Minor Outlying Islands"
+msgstr "Yhdysvallat Pienet syrjäiset saaret"
+
+msgid "Uruguay"
+msgstr "Uruguay"
+
+msgid "Uzbekistan"
+msgstr "Uzbekistan"
+
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+msgid "Venezuela (Bolivarian Republic of)"
+msgstr "Venezuela (Bolivarian Republic of)"
+
+msgid "Viet Nam"
+msgstr "Vietnam"
+
+msgid "Virgin Islands (British)"
+msgstr "Virgin Islands (British)"
+
+msgid "Virgin Islands (U.S.)"
+msgstr "Virgin Islands (U.S.)"
+
+msgid "Wallis and Futuna"
+msgstr "Wallis and Futuna"
+
+msgid "Western Sahara"
+msgstr "Länsi-Sahara"
+
+msgid "Yemen"
+msgstr "Yemen"
+
+msgid "Zambia"
+msgstr "Sambia"
+
+msgid "Zimbabwe"
+msgstr "Zimbabwe"
+
+msgid "Do you want to resume this playback?"
+msgstr "Jatketaanko kohdasta, johon katselu viimeksi jäi?"
+
+msgid "Resume position at %s"
+msgstr "Jatka kohdasta %s"
+
+msgid "%s has been updated. Restart Enigma2 now to use the new version?"
+msgstr "%s on päivitetty. Käynnistetäänkö Enigma2 uudelleen nyt uuden version käyttämiseksi?"
+
+msgid "A newer %s package (%s) is available. Do you want to install it now?"
+msgstr "Uudempi %s-paketti (%s) on saatavilla. Haluatko asentaa sen nyt?"
