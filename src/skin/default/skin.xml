@@ -33,8 +33,8 @@
 		<widget alphatest="blend" backgroundColor="black" cornerRadius="27" font="Regular;0" foregroundColor="black" name="posterBG" position="733,233" size="472,679" widgetBorderColor="#00ffde2b" widgetBorderWidth="2" zPosition="3"/>
 		<widget alphatest="blend" backgroundColor="black" cornerRadius="25" name="poster" position="735,235" size="468,675" transparent="1" zPosition="5"/>
 		<widget font="Regular;26" name="info" position="1223,235" size="619,675" transparent="1" zPosition="5"/>
-		<eLabel backgroundColor="separator" position="0,e-56" size="e,2"/>
-		<eLabel backgroundColor="barBG" position="0,e-55" size="e,55"/>
+		<eLabel backgroundColor="separator" position="0,1024" size="1920,2"/>
+		<eLabel backgroundColor="barBG" position="0,1025" size="1920,55"/>
 		<widget conditional="key_red" font="Regular;32" foregroundColor="keyRed" halign="center" name="key_red" position="0,1032" size="435,38" transparent="1" valign="center" zPosition="2"/>
 		<widget conditional="key_green" font="Regular;32" foregroundColor="keyGreen" halign="center" name="key_green" position="435,1032" size="435,38" transparent="1" valign="center" zPosition="2"/>
 		<widget conditional="key_yellow" font="Regular;32" foregroundColor="keyYellow" halign="center" name="key_yellow" position="870,1032" size="435,38" transparent="1" valign="center" zPosition="2"/>
