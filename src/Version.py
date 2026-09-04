@@ -4,6 +4,6 @@
 
 PLUGIN = "SamsungTVCockpit"
 ID = "STV"
-VERSION = "1.16.1"
+VERSION = "1.16.5"
 COPYRIGHT = "(C) 2026 by xcentaurix"
 LICENSE = "This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version."

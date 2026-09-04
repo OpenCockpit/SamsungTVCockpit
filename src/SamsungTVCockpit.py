@@ -51,7 +51,6 @@ class SamsungTVCockpit(Screen, HelpableScreen):
 
         self.titlemenu = _("Channel Categories")
         self["feedlist"] = PRSList([])
-        self["playlist"] = StaticText(self.titlemenu)
         self["loading"] = Label(_("Loading data... Please wait"))
         self["vtitle"] = StaticText()
         self["key_red"] = Button(_("Exit"))
@@ -60,7 +59,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
         self.yellowLabel = _("TMDb Search") if self.mdb == "tmdb" else (_("IMDb Search") if self.mdb else "")
         self["key_green"] = Button()
         self["updated"] = StaticText()
-        self["key_menu"] = Button(_("MENU"))
+        self["key_menu"] = Button("Menu")
         self["poster"] = Pixmap()
         self["posterBG"] = Label()
         self["info"] = ScrollLabel()
@@ -245,7 +244,6 @@ class SamsungTVCockpit(Screen, HelpableScreen):
             self["feedlist"].moveToIndex(0)
             self["feedlist"].setList(menu)
             self.titlemenu = name
-            self["playlist"].text = self.titlemenu
             self.title = _("Samsung TV Plus") + " - " + self.titlemenu
             self.history.append((index, menuact))
         elif __type in {"movie", "channel"}:
@@ -274,7 +272,6 @@ class SamsungTVCockpit(Screen, HelpableScreen):
             self.history.pop()
             self["feedlist"].moveToIndex(hist)
             self.titlemenu = histname
-            self["playlist"].text = self.titlemenu
             self.title = _("Samsung TV Plus") + " - " + self.titlemenu
             if not self.history:
                 self["poster"].hide()
