@@ -157,18 +157,24 @@ class SamsungTVCockpit(Screen, HelpableScreen):
             picname = film[0]
             self.picname = picname
             pic = film[6]
+            logger.debug("_do_update_data: picname=%r pic=%r", picname, pic)
             if pic and len(picname) > 5:
                 self["poster"].hide()
                 self["posterBG"].hide()
                 threads.deferToThread(downloadPoster, pic, picname, self.downloadPostersCallback)
+            else:
+                logger.debug("_do_update_data: skipping download - pic or picname check failed")
 
     def updateInfo(self):
         spacer = "\n" if self.vinfo or self.description else ""
         self["info"].setText("\n".join([x for x in (self.vinfo, self.description, spacer) if x]))
 
     def downloadPostersCallback(self, filename, name):
+        logger.debug("downloadPostersCallback: filename=%r name=%r self.picname=%r", filename, name, self.picname)
         if name == self.picname:
             self.showPoster(filename, name)
+        else:
+            logger.debug("downloadPostersCallback: stale callback, selection moved on")
 
     def showPoster(self, filename, name):
         try:
@@ -177,6 +183,10 @@ class SamsungTVCockpit(Screen, HelpableScreen):
                 self["poster"].instance.setPixmap(LoadPixmap(filename))
                 self["poster"].show()
                 self["posterBG"].show()
+                logger.debug("showPoster: shown %s", filename)
+            else:
+                logger.debug("showPoster: not showing - name match=%s filename=%r isfile=%s",
+                              name == self.picname, filename, filename and os.path.isfile(filename))
         except Exception as ex:
             logger.error("showPoster: %s", ex)
 
