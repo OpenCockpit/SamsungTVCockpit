@@ -4,7 +4,6 @@
 from Components.config import config
 from Plugins.Plugin import PluginDescriptor
 from twisted.internet import threads
-from skin import findSkinScreen
 
 from .PluginUpgrade import checkPluginUpdateAndOpen
 from . import _
@@ -15,12 +14,11 @@ from .SamsungTVCockpit import SamsungTVCockpit
 from .PlaybackWatchdog import start as startPlaybackWatchdog
 from .Variables import PLUGIN_ICON
 from .SkinUtils import loadPluginSkin
-from .Version import VERSION
+from .Version import PLUGIN, VERSION
 from .Debug import logger
 
 
-if findSkinScreen("SamsungTVCockpit") is None:
-    loadPluginSkin()
+loadPluginSkin(PLUGIN)
 
 
 def sessionstart(reason, session, **_kwargs):  # pylint: disable=unused-argument
