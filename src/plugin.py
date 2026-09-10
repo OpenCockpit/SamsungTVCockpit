@@ -12,7 +12,6 @@ from .SamsungTVRequest import samsungRequest
 from .SamsungTVDownload import SamsungTVDownload, Silent
 from .SamsungTVCockpit import SamsungTVCockpit
 from .PlaybackWatchdog import start as startPlaybackWatchdog
-from .Variables import PLUGIN_ICON
 from .SkinUtils import loadPluginSkin
 from .Version import PLUGIN, VERSION
 from .Debug import logger
@@ -43,7 +42,7 @@ def Plugins(**_kwargs):
         PluginDescriptor(
             name=_("SamsungTVCockpit"),
             where=PluginDescriptor.WHERE_PLUGINMENU,
-            icon=PLUGIN_ICON,
+            icon="plugin.png",
             description=_("Live-TV-Bouquet Management"),
             fnc=system,
             needsRestart=True
