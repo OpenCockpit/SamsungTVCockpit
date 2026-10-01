@@ -168,7 +168,7 @@ class SamsungTVDownload(TVDownloadScreenMixin, SamsungTVDownloadBase, Screen):
     def __init__(self, session, locations=None):
         self.session = session
         Screen.__init__(self, session)
-        self.skinName = "DownloadProgress"
+        self.skinName = "PRSDownloadProgress"
         self.title = _("Samsung TV Plus updating")
         SamsungTVDownloadBase.__init__(self, locations=locations)
         self.total = 0
