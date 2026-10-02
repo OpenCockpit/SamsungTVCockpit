@@ -1,0 +1,68 @@
+screen:
+  name: "CockpitLivePlayerSummary"
+  position: "fill"
+  resolution: "396,240"
+  children:
+    - xmlinc:
+        file: "screenpart_LCDBackground.ymlinc"
+        imagepath: "~/../images"
+    - widget:
+        font: "$F_big"
+        halign: "center"
+        position: "0,0"
+        render: "Label"
+        size: "$screen_width-4,130"
+        source: "session.Event_Now"
+        transparent: "1"
+        valign: "center"
+        zPosition: "2"
+        children:
+          - convert:
+              type: "EventName"
+              text: "Name"
+    - widget:
+        alphatest: "blend"
+        borderColor: "FdLcdAmber"
+        borderWidth: "2"
+        position: "0,140"
+        render: "Progress"
+        size: "$screen_width-4,20"
+        source: "session.Event_Now"
+        transparent: "1"
+        zPosition: "2"
+        children:
+          - convert:
+              type: "EventTime"
+              text: "Progress"
+    - widget:
+        font: "$F_bigger"
+        halign: "left"
+        position: "0,$screen_height-70"
+        render: "Label"
+        size: "198,70"
+        source: "session.Event_Now"
+        transparent: "1"
+        valign: "center"
+        children:
+          - convert:
+              type: "EventTime"
+              text: "EndTime"
+          - convert:
+              type: "ClockToText"
+              text: "Format:>%H:%M"
+    - widget:
+        font: "$F_bigger"
+        halign: "right"
+        position: "198,$screen_height-70"
+        render: "Label"
+        size: "194,70"
+        source: "session.Event_Now"
+        transparent: "1"
+        valign: "center"
+        children:
+          - convert:
+              type: "EventTime"
+              text: "Remaining"
+          - convert:
+              type: "RemainingToText"
+              text: "VFDOnlyMinutes"

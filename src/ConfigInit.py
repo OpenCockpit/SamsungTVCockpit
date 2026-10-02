@@ -1,7 +1,7 @@
 # Copyright (C) 2026 by xcentaurix
 # License: GNU General Public License v3.0
 
-from Components.config import ConfigDirectory, ConfigSelection, ConfigSubsection, config
+from Components.config import ConfigDirectory, ConfigSelection, ConfigSubsection, ConfigYesNo, config
 
 from . import _
 from .CountryCodes import ISO3166
@@ -33,6 +33,8 @@ config.plugins.samsungtv.region = ConfigSelection(default="de", choices=list(REG
 config.plugins.samsungtv.picons = ConfigSelection(default="snp", choices=[("snp", _("service name")), ("srp", _("service reference")), ("", _("None"))])
 config.plugins.samsungtv.silentmode = ConfigSelection(default="yes", choices=[("yes", _("Yes")), ("no", _("No"))])
 config.plugins.samsungtv.auto_update_check = ConfigSelection(default="yes", choices=[("yes", _("Yes")), ("no", _("No"))])
+config.plugins.samsungtv.movie_resume_at_last_pos = ConfigYesNo(default=False)
+config.plugins.samsungtv.movie_start_position = ConfigSelection(default="beginning", choices=[("beginning", _("beginning"))])
 config.plugins.samsungtv.config_folder = ConfigDirectory(default="/etc/enigma2")
 
 
