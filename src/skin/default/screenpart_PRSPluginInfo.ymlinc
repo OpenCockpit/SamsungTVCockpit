@@ -1,0 +1,8 @@
+- widget:
+    backgroundColor: "backgroundMedium"
+    font: "$FR_medium"
+    name: "info"
+    position: "1180,65"
+    size: "615,675"
+    transparent: "0"
+    zPosition: "5"
