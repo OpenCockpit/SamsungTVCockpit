@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SamsungTV\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 14:17+0200\n"
-"PO-Revision-Date: 2026-08-19 14:18+0200\n"
+"POT-Creation-Date: 2026-10-14 15:08+0200\n"
+"PO-Revision-Date: 2026-10-14 15:17+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: xcentaurix\n"
 "Language: de_DE@formal\n"
@@ -30,6 +30,9 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
+msgid "beginning"
+msgstr "Anfang"
+
 msgid "Channel Categories"
 msgstr "Kanal-Kategorien"
 
@@ -44,9 +47,6 @@ msgstr "TMDb Suche"
 
 msgid "IMDb Search"
 msgstr "IMDb Suche"
-
-msgid "MENU"
-msgstr "Menü"
 
 msgid "Go forward one level including starting playback"
 msgstr "Eine Ebene forwärts gehen mit Playback starten"
@@ -141,6 +141,18 @@ msgstr "Bitte warten..."
 msgid "Updating: Samsung TV Plus %s"
 msgstr "Samsung TV Plus wird aktualisiert: %s"
 
+msgid "Samsung TV Plus refused the request for %s (HTTP %s). It may be geo-blocked."
+msgstr "Samsung TV verweigerte den Request für %s (HTTP %s). Möglicherweise aufgrund von Geo-Blocking."
+
+msgid "Samsung TV Plus could not be reached for %s%s. Try again later."
+msgstr "Samsung TV konnte nicht erreicht werden für %s%s. Später nochmal probieren."
+
+msgid "Samsung TV Plus lists channels for %s, but no stream address could be resolved for any of them. The streams may be geo-blocked or unavailable."
+msgstr "Samsung TV listet Kanäle für %s, aber die ausgewählte Quelle hat keine Stream-Adresse(n)."
+
+msgid "Samsung TV Plus has no channels for %s. It may not be available in your region."
+msgstr "Es konnten keine Daten für %s geladen werden. Dies könnte durch Geo-Blocking verursacht werden oder Samsung TV ist in Ihrem Land nicht verfügbar."
+
 msgid "Remove picons"
 msgstr "Picons entfernen"
 
@@ -182,6 +194,12 @@ msgstr "Daten-Verzeichnis"
 
 msgid "Location the configuration data are stored in."
 msgstr "Verzeichnis der Konfigurationsdaten"
+
+msgid "Stream proxy"
+msgstr "Stream Proxy"
+
+msgid "Play and record through StreamProxyCockpit, which keeps the ad breaks of the streams from disturbing playback and recordings. Off: the bouquet holds the real stream addresses. The bouquet of each setting is kept, so changing it switches between them; one that doesn't exist yet, or is older than 5 hours, is generated."
+msgstr "Abspielen und Aufnehmen über StreamProxyCockpit. Ein: Es verhindert, dass die Werbeunterbrechungen der Streams Wiedergabe und Aufnahmen stören. Aus: Direkte Wiedergabe/Aufnahme des Kanals."
 
 msgid "Log level"
 msgstr "Log-Stufe"

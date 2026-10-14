@@ -32,7 +32,8 @@ from .Debug import logger
 
 _SAMSUNG_TSIDS = set(TSIDS.values())
 
-_last_retried = None
+_last_retried = None  # sref string of the last zap already retried once, so the
+#                        retry itself (if it also comes up empty) doesn't loop forever
 _registered = False
 
 
@@ -50,7 +51,7 @@ def _onNavEvent(session, ev):
         return
     refstr = ref.toString()
     if refstr == _last_retried:
-        _last_retried = None
+        _last_retried = None  # this was itself the retry attempt - give up, don't loop
         return
     service = session.nav.getCurrentService()
     info = service and service.info()

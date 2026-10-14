@@ -9,6 +9,7 @@ from .Variables import NUMBER_OF_LIVETV_BOUQUETS
 from .CockpitTVConfig import setupLocationSlots
 
 
+# Regions available on Samsung TV Plus (via i.mjh.nz)
 REGIONS = [
     "at",
     "ca",
@@ -23,19 +24,26 @@ REGIONS = [
     "us",
 ]
 
+# ISO3166 is sorted in English, sorted will sort by locale.
 REGION_NAMES = {cc: country[0].split("(")[0].strip() for country in sorted(ISO3166) if (cc := country[1].lower()) in REGIONS}
 
 TSIDS = {cc: f"{i:X}" for i, cc in enumerate(REGION_NAMES, 0x160)}
 
+
+# --- Config subsection ---------------------------------------------------
 
 config.plugins.samsungtv = ConfigSubsection()
 config.plugins.samsungtv.region = ConfigSelection(default="de", choices=list(REGION_NAMES.items()))
 config.plugins.samsungtv.picons = ConfigSelection(default="snp", choices=[("snp", _("service name")), ("srp", _("service reference")), ("", _("None"))])
 config.plugins.samsungtv.silentmode = ConfigSelection(default="yes", choices=[("yes", _("Yes")), ("no", _("No"))])
 config.plugins.samsungtv.auto_update_check = ConfigSelection(default="yes", choices=[("yes", _("Yes")), ("no", _("No"))])
+# Read by PRSCockpitPlayer (CockpitPlayer); not offered in the setup screen.
 config.plugins.samsungtv.movie_resume_at_last_pos = ConfigYesNo(default=False)
 config.plugins.samsungtv.movie_start_position = ConfigSelection(default="beginning", choices=[("beginning", _("beginning"))])
 config.plugins.samsungtv.config_folder = ConfigDirectory(default="/etc/enigma2")
+config.plugins.samsungtv.stream_proxy = ConfigYesNo(default=False)
 
+
+# --- Live-TV region config items -----------------------------------------
 
 getselectedregions = setupLocationSlots(config.plugins.samsungtv, "live_tv_region", REGION_NAMES, NUMBER_OF_LIVETV_BOUQUETS, _("None"), first_default="de")

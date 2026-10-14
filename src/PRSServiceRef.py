@@ -33,6 +33,7 @@ def findChannelIdent(bouquet_file, name):
                 if not line.startswith("#SERVICE 4097:"):
                     continue
                 parts = line[len("#SERVICE "):].strip().split(":")
+                # ref (10 fields) : url (colons escaped) : channel name
                 if len(parts) >= 12 and ":".join(parts[11:]) == name:
                     return ":".join(parts[:10])
     except OSError as exc:

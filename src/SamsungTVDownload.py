@@ -11,6 +11,7 @@ from Components.Label import Label
 from Components.ProgressBar import ProgressBar
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
+from Plugins.SystemPlugins.StreamProxyCockpit.LiveProxyUnmuxed import PROXY_HOST, PROXY_PORT
 from enigma import eTimer
 from twisted.internet import threads
 
@@ -18,16 +19,24 @@ from . import _
 from .ConfigInit import REGION_NAMES, TSIDS, getselectedregions
 from .SamsungTVRequest import samsungRequest
 from .Variables import TIMER_FILE, NODATA_FILE, BOUQUET_FILE, BOUQUET_NAME, CHANNELLIST_FILE, XMLTV_FILE
-from .CockpitTVDownload import TVDownloadBase, TVDownloadScreenMixin, TVDownloadSilentMixin, importXMLTVGuide
+from .CockpitTVDownload import TVDownloadBase, TVDownloadScreenMixin, TVDownloadSilentMixin, importXMLTVGuide, FAIL_GEO, FAIL_NETWORK, FAIL_NOSTREAM
+from .M3UPlaylist import writeM3UPlaylist
 from .Debug import logger
 
 
+# Data paths for ignore/replace lists
 DATA_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
 SAMSUNG_IGNORE = "samsungtvplus.ignore"
+
+
 SAMSUNG_REPLACE = "samsungtvplus.replace"
 
+# External EPG XML source
 EXT_SAMSUNG_XML = "https://i.mjh.nz/SamsungTVPlus/%s.xml"
 
+# i.mjh.nz only ever publishes a short rolling window (observed ~6-9h), well under
+# the 5h full bouquet-rebuild cycle - refresh just the EPG on its own faster cadence
+# so events don't run dry between full rebuilds.
 EPG_REFRESH_MINUTES = 90
 
 
@@ -41,7 +50,7 @@ class SamsungTVDownloadBase(TVDownloadBase):
     XMLTV_FILE = XMLTV_FILE
     TSIDS = TSIDS
 
-    FINALIZE_DELAY = 3
+    FINALIZE_DELAY = 3  # let the reactor paint 100% before the next region resets it to 0%
     SILENT_IN_PROGRESS_TEXT = _("A silent download is in progress.")
     PICONS_LABEL = _("picons")
     FETCHING_PICONS_TEXT = _("Fetching picons...")
@@ -72,6 +81,11 @@ class SamsungTVDownloadBase(TVDownloadBase):
             pass
         return ignores
 
+    def _proxyEnabled(self):
+        """True if the bouquet gets the lazy addresses StreamProxyCockpit resolves (setting "Stream proxy"), False for
+        the addresses of the streams themselves."""
+        return config.plugins.samsungtv.stream_proxy.value
+
     def _selectedLocations(self):
         return getselectedregions()
 
@@ -86,6 +100,9 @@ class SamsungTVDownloadBase(TVDownloadBase):
 
     def _fetchChannels(self, cc):
         return samsungRequest.getChannels(cc)
+
+    def _fetchFailure(self, cc):
+        return samsungRequest.failure("json")   # one file for all regions
 
     def _bouquetName(self, cc):
         return BOUQUET_NAME % REGION_NAMES.get(cc, cc).upper()
@@ -102,6 +119,7 @@ class SamsungTVDownloadBase(TVDownloadBase):
             logger.error("EPG fetch error for %s: %s", cc, e)
             return
 
+        # Build channel ref mapping for EPG import
         channels_map = {}
         for cat in self.categories:
             if cat in self.channelsList:
@@ -133,9 +151,27 @@ class SamsungTVDownloadBase(TVDownloadBase):
 
     def _buildBouquetEntry(self, key, chitem):
         ch_sid, _ch_hash, ch_name, ch_logourl, _id = self.channelsList[key][chitem]
-        stream_url = samsungRequest.buildStreamURL(_id).replace(":", "%3a")
+        if self.bouquetProxy:
+            # lazy address, resolved by StreamProxyCockpit when the channel is played or recorded (see SamsungTVRequest)
+            stream_url = samsungRequest.SAMSUNG_SCHEMA + _id
+        else:
+            # nothing resolves a lazy address without the stream proxy: the address of the stream itself, as before
+            stream_url = samsungRequest.buildStreamURL(_id).replace(":", "%3a")
         ref = f"4097:0:1:{ch_sid}:{self.tsid}:1:2:0:0:0"
         return ref, stream_url, ch_name, ch_logourl
+
+    def _afterBouquetWritten(self, cc, bouquet_name):
+        if not self.bouquetProxy:
+            super()._afterBouquetWritten(cc, bouquet_name)   # the playlist of the real stream addresses
+            return
+        # The bouquet's own samsungtv:// addresses only mean something to Enigma2 (see _buildBouquetEntry), so the
+        # exported playlist points to the stream proxy instead (only reachable from this box itself).
+        entries = {
+            group: [(chid, name, logo, f"http://{PROXY_HOST}:{PROXY_PORT}/auto/{chid}.m3u8")
+                    for _sid, chid, name, logo, _id in self.channelsList.get(group, [])]
+            for group in self.categories
+        }
+        writeM3UPlaylist(os.path.join(self._configFolder(), self.CHANNELLIST_FILE % cc), bouquet_name, self.categories, entries)
 
     def buildM3U(self, channel):
         logo = channel.get("logo", "")
@@ -182,8 +218,19 @@ class SamsungTVDownload(TVDownloadScreenMixin, SamsungTVDownloadBase, Screen):
     def updateAction(self, cc=""):
         self["action"].text = _("Updating: Samsung TV Plus %s") % cc.upper()
 
-    def noCategories(self, cc=""):
-        self.session.open(MessageBox, _("There is no data for %s. It may be caused by geo-blocking, or Samsung TV Plus may not be available in your region.") % REGION_NAMES.get(cc, cc), type=MessageBox.TYPE_ERROR, timeout=10)
+    def noCategories(self, cc="", reason=None, detail=None):
+        # Informational only - the download continues with the next selected
+        # location, so this must not close the screen (openWithCallback would).
+        name = REGION_NAMES.get(cc, cc)
+        if reason == FAIL_GEO:
+            text = _("Samsung TV Plus refused the request for %s (HTTP %s). It may be geo-blocked.") % (name, detail)
+        elif reason == FAIL_NETWORK:
+            text = _("Samsung TV Plus could not be reached for %s%s. Try again later.") % (name, f" (HTTP {detail})" if detail else "")
+        elif reason == FAIL_NOSTREAM:
+            text = _("Samsung TV Plus lists channels for %s, but no stream address could be resolved for any of them. The streams may be geo-blocked or unavailable.") % name
+        else:
+            text = _("Samsung TV Plus has no channels for %s. It may not be available in your region.") % name
+        self.session.open(MessageBox, text, type=MessageBox.TYPE_ERROR, timeout=10)
 
     def _restartSilentTimer(self):
         Silent.stop()
@@ -219,7 +266,7 @@ class DownloadSilent(TVDownloadSilentMixin, SamsungTVDownloadBase):
 
     def _epgRefreshThread(self):
         if self._isDownloadActive():
-            return
+            return  # a full update won the race - it refreshes EPG too, nothing more to do
         self._setDownloadActive(True)
         try:
             locations = [x for x in self._selectedLocations() if x] or [self._defaultLocation()]

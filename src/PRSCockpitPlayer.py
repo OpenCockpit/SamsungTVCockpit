@@ -27,9 +27,8 @@ movie_resume_at_last_pos and movie_start_position (read by CockpitPlayer).
 """
 from Components.config import config
 from Screens.MessageBox import MessageBox
-from Tools import Notifications
-
 from Screens.Screen import ScreenSummary
+from Tools import Notifications
 
 from . import _
 from .Debug import logger
@@ -37,7 +36,7 @@ from .CockpitPlayer import CockpitPlayer
 from .CutListUtils import secondsToPts, ptsToSeconds
 
 
-RESUME_MIN_PTS = 900000
+RESUME_MIN_PTS = 900000  # 10 s; don't offer to resume right at the start or the end
 
 
 class CockpitLivePlayerSummary(ScreenSummary):

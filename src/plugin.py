@@ -3,12 +3,13 @@
 
 from Components.config import config
 from Plugins.Plugin import PluginDescriptor
+from Plugins.SystemPlugins.StreamProxyCockpit import StreamProxy
 from twisted.internet import threads
 
 from .PluginUpgrade import checkPluginUpdateAndOpen
 from . import _
 from . import ConfigInit  # noqa: F401, pylint: disable=unused-import
-from .SamsungTVRequest import samsungRequest
+from .SamsungTVRequest import samsungRequest, resolveStream
 from .SamsungTVDownload import SamsungTVDownload, Silent
 from .SamsungTVCockpit import SamsungTVCockpit
 from .PlaybackWatchdog import start as startPlaybackWatchdog
@@ -18,6 +19,10 @@ from .Debug import logger
 
 
 loadPluginSkin(PLUGIN)
+
+# The bouquets address a channel as samsungtv://<id>. StreamProxyCockpit resolves such a service when it is played or
+# recorded and installs its service extensions while the plugin is loaded (see StreamProxy.registerProvider).
+StreamProxy.registerProvider(samsungRequest.SCHEME, resolveStream)
 
 
 def sessionstart(reason, session, **_kwargs):  # pylint: disable=unused-argument

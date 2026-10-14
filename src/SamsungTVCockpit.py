@@ -269,8 +269,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
             film = self.films[index]
             sid = film[0]
             name = film[1]
-            url = film[9]
-            self.playStream(name, sid, url, film[2], film[5])
+            self.playStream(name, sid, samsungRequest.getProxyURL(sid), film[2], film[5])
 
     def back(self):
         if not (selection := self.getSelection()):
@@ -306,7 +305,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
     def _playerClosed(self, *_args):
         if self.last_service:
             self.session.nav.playService(self.last_service)
-        self["feedlist"].refresh()
+        self["feedlist"].refresh()  # pick up the resume point saved on leaving the player
 
     def green(self):
         locations = [x for x in getselectedregions() if x] or [config.plugins.samsungtv.region.value]
@@ -338,6 +337,9 @@ class SamsungTVCockpit(Screen, HelpableScreen):
         with open("/etc/enigma2/bouquets.tv", "r", encoding="utf-8") as f:
             bouquets = f.read()
         nodata = loadNoDataLocations(NODATA_FILE)
+        # A selected region missing its bouquet is only "still needs updating" if
+        # we haven't actually tried it yet - one that came back empty last run (e.g.
+        # geo-blocked) is settled, since pressing GREEN again wouldn't change that.
         if fileExists(TIMER_FILE) and all(((BOUQUET_FILE % cc) in bouquets or cc in nodata) for cc in [x for x in getselectedregions() if x]):
             with open(TIMER_FILE, "r", encoding="utf-8") as f:
                 last = float(f.read().replace("\n", "").replace("\r", ""))

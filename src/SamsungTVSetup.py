@@ -12,6 +12,7 @@ from Screens.Setup import Setup
 from . import _
 from .ConfigInit import NUMBER_OF_LIVETV_BOUQUETS
 from .SamsungTVDownload import SamsungTVDownload, Silent
+from .CockpitTVDownload import removeBouquetVariants
 from .PiconFetcher import PiconFetcher
 from .Variables import BOUQUET_FILE
 from .Version import VERSION
@@ -45,6 +46,7 @@ class SamsungTVSetup(Setup):
         configList.append((_("Picon type"), config.plugins.samsungtv.picons, _("Using service name picons means they will continue to work even if the service reference changes.")))
         configList.append((_("Automatic update check"), config.plugins.samsungtv.auto_update_check, _("Automatically check for a newer package update when the plugin GUI is opened.")))
         configList.append((_("Data location"), config.plugins.samsungtv.config_folder, _("Location the configuration data are stored in.")))
+        configList.append((_("Stream proxy"), config.plugins.samsungtv.stream_proxy, _("Play and record through StreamProxyCockpit, which keeps the ad breaks of the streams from disturbing playback and recordings. Off: the bouquet holds the real stream addresses. The bouquet of each setting is kept, so changing it switches between them; one that doesn't exist yet, or is older than 5 hours, is generated.")))
         configList.append((_("Log level"), config.plugins.samsungtvcockpit.debug_log_level, _("Select the level for debug logging.")))
         self["config"].list = configList
 
@@ -55,7 +57,15 @@ class SamsungTVSetup(Setup):
 
     def keySave(self):
         if self._locationConfigChanged():
+            # generates the bouquets for the current "Stream proxy" setting as well
             self.session.openWithCallback(lambda *_: Setup.keySave(self), SamsungTVDownload)
+        elif config.plugins.samsungtv.stream_proxy.isChanged():
+            # the locations without a stored bouquet are generated on top of the setup, like above
+            missing = Silent.switchBouquetVariants()
+            if missing:
+                self.session.openWithCallback(lambda *_: Setup.keySave(self), SamsungTVDownload, missing)
+            else:
+                Setup.keySave(self)
         else:
             Setup.keySave(self)
 
@@ -83,4 +93,5 @@ class SamsungTVSetup(Setup):
             Silent.stop()
             from enigma import eDVBDB
             eDVBDB.getInstance().removeBouquet(re.escape(BOUQUET_FILE) % ".*")
+            removeBouquetVariants(BOUQUET_FILE)
             self.updateBlueButton()
