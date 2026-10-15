@@ -27,6 +27,8 @@ This repository has no control over the streams, links, or the legality of the c
 ## Limitations
 - Tested on OpenViX and OpenATV with DM900.
 
-## Links
-- Installation: https://OpenCockpit.github.io/SamsungTVCockpit
-- User Guide: https://github.com/OpenCockpit/SamsungTVCockpit/wiki
+## Installation
+- https://OpenCockpit.github.io/SamsungTVCockpit
+
+## Wiki
+- https://github.com/OpenCockpit/SamsungTVCockpit/wiki
