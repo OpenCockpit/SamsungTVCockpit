@@ -39,7 +39,8 @@ def Download_SamsungTV(session, **_kwargs):
 def system(session, **_kwargs):
     checkPluginUpdateAndOpen(
         session, "enigma2-plugin-extensions-samsungtvcockpit", "SamsungTVCockpit",
-        SamsungTVCockpit, config.plugins.samsungtv.auto_update_check)
+        SamsungTVCockpit, config.plugins.samsungtv.auto_update_check,
+        also_check=(("enigma2-plugin-systemplugins-streamproxycockpit", "StreamProxyCockpit"),))
 
 
 def Plugins(**_kwargs):
