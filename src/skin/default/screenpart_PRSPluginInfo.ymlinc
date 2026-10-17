@@ -1,6 +1,6 @@
 - widget:
-    backgroundColor: "backgroundMedium"
-    font: "$FR_medium"
+    backgroundColor: "md_surface"
+    font: "$md_body_large"
     name: "info"
     position: "1180,65"
     size: "615,675"
