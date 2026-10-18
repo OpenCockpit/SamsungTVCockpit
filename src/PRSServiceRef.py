@@ -23,6 +23,12 @@ ANONYMOUS_IDENT = "4097:0:0:0:0:0:0:0:0:0"
 BOUQUET_DIR = "/etc/enigma2"
 
 
+def escapeServiceName(name):
+    """The name as it has to be written into a service reference or bouquet line: enigma2 unescapes %xx there, so a
+    channel called "100%Joulu" would come back as "100oulu" (and no longer find its picon) unless the % is written %25."""
+    return name.replace("%", "%25")
+
+
 def findChannelIdent(bouquet_file, name):
     """Return the first ten fields (the EPG identity) of the bouquet entry
     for the channel called *name*, or None if the bouquet has no such entry."""
@@ -34,7 +40,7 @@ def findChannelIdent(bouquet_file, name):
                     continue
                 parts = line[len("#SERVICE "):].strip().split(":")
                 # ref (10 fields) : url (colons escaped) : channel name
-                if len(parts) >= 12 and ":".join(parts[11:]) == name:
+                if len(parts) >= 12 and ":".join(parts[11:]) == escapeServiceName(name):
                     return ":".join(parts[:10])
     except OSError as exc:
         logger.debug("cannot read %s: %s", path, exc)

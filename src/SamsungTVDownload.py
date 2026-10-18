@@ -1,8 +1,10 @@
 # Copyright (C) 2026 by xcentaurix
 # License: GNU General Public License v3.0
 
+import calendar
 import os
 import re
+import time
 import zlib
 
 from Components.ActionMap import ActionMap
@@ -34,14 +36,18 @@ SAMSUNG_REPLACE = "samsungtvplus.replace"
 # External EPG XML source
 EXT_SAMSUNG_XML = "https://i.mjh.nz/SamsungTVPlus/%s.xml"
 
-# i.mjh.nz only ever publishes a short rolling window (observed ~6-9h), well under
-# the 5h full bouquet-rebuild cycle - refresh just the EPG on its own faster cadence
-# so events don't run dry between full rebuilds.
+# i.mjh.nz only ever publishes the rest of the current day (UTC): the guide it holds shrinks through the day and
+# is longer again once the file of the next day is published. Refresh just the EPG on its own, faster cadence than
+# the 5h full bouquet-rebuild cycle so events don't run dry between full rebuilds; and when the guide that was
+# fetched runs out within EPG_LOW_HOURS, look for the new file every EPG_REFRESH_LOW_MINUTES.
 EPG_REFRESH_MINUTES = 90
+EPG_REFRESH_LOW_MINUTES = 30
+EPG_LOW_HOURS = 3
 
 
 class SamsungTVDownloadBase(TVDownloadBase):
     downloadActive = False
+    guideEnds = {}   # region -> time (epoch) the guide fetched last for it ends
 
     TIMER_FILE = TIMER_FILE
     NODATA_FILE = NODATA_FILE
@@ -128,9 +134,23 @@ class SamsungTVDownloadBase(TVDownloadBase):
                     channels_map[_id] = ref
                     channels_map[_id.lower()] = ref
 
+        self.guideEnds[cc] = self._latestStop(xmltv_data)
         path = os.path.join(self._configFolder(), self.XMLTV_FILE % cc)
         if not importXMLTVGuide(self.epgcache, "Samsung TV Plus", path, xmltv_data, channels_map):
             self.epgimport_missing = True
+
+    @staticmethod
+    def _latestStop(xmltv_data):
+        """The time (epoch) the last programme of the guide ends, 0 if there is none. The feed's times are UTC."""
+        stops = re.findall(rb'stop="(\d{14})', xmltv_data)
+        return calendar.timegm(time.strptime(max(stops).decode(), "%Y%m%d%H%M%S")) if stops else 0
+
+    @classmethod
+    def epgRefreshSeconds(cls):
+        """The time to the next guide refresh: shorter while the guide of any region is about to run out."""
+        now = time.time()
+        low = any(end - now < EPG_LOW_HOURS * 3600 for end in cls.guideEnds.values())
+        return (EPG_REFRESH_LOW_MINUTES if low else EPG_REFRESH_MINUTES) * 60
 
     def _refreshEpgOnly(self, cc):
         """Re-fetch and re-import EPG for *cc* without touching channels/picons/bouquet.
@@ -260,7 +280,7 @@ class DownloadSilent(TVDownloadSilentMixin, SamsungTVDownloadBase):
         self.epgTimer.stop()
 
     def epgRefresh(self):
-        self.epgTimer.startLongTimer(EPG_REFRESH_MINUTES * 60)
+        self.epgTimer.startLongTimer(self.epgRefreshSeconds())
         if not self._isDownloadActive():
             threads.deferToThread(self._epgRefreshThread)
 
