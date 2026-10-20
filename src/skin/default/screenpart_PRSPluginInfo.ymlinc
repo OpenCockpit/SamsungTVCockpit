@@ -1,8 +1,16 @@
+# the canvas of the description (shown and hidden with the text by the plugin), the text is inset by 16 px
 - widget:
     backgroundColor: "md_surface"
+    cornerRadius: "$radius_panel_large"
+    name: "infoBG"
+    position: "1125,65"
+    size: "560,675"
+    transparent: "0"
+    zPosition: "-1"
+- widget:
     font: "$md_body_large"
     name: "info"
-    position: "1180,65"
-    size: "615,675"
-    transparent: "0"
+    position: "1141,81"
+    size: "528,643"
+    transparent: "1"
     zPosition: "5"
