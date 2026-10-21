@@ -35,7 +35,7 @@ from .PRSServiceCenter import ServiceCenter
 from .PRSServiceRef import liveReference
 from .Debug import logger
 
-_utils = PRSUtils(config.plugins.samsungtv)
+_utils = PRSUtils(config.plugins.samsungtvcockpit)
 downloadPoster = _utils.downloadPoster
 resumePointsInstance = _utils.resumePoints
 
@@ -112,7 +112,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
         self.onLayoutFinish.append(self.getCategories)
 
     def initialise(self):
-        self.region = config.plugins.samsungtv.region.value
+        self.region = config.plugins.samsungtvcockpit.region.value
         self.films = []
         self.menu = []
         self.history = []
@@ -305,7 +305,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
             if "m3u8" in url.lower() or "jmp2" in url.lower() or "127.0.0.1" in url:
                 self.service_center.setMovie(name, description, duration)
                 self.last_service = self.session.nav.getCurrentlyPlayingServiceOrGroup()
-                self.session.openWithCallback(self._playerClosed, PRSCockpitPlayer, reference, sid, resumePointsInstance, self.service_center, config.plugins.samsungtv, live=True)
+                self.session.openWithCallback(self._playerClosed, PRSCockpitPlayer, reference, sid, resumePointsInstance, self.service_center, config.plugins.samsungtvcockpit, live=True)
 
     def _playerClosed(self, *_args):
         if self.last_service:
@@ -313,7 +313,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
         self["feedlist"].refresh()  # pick up the resume point saved on leaving the player
 
     def green(self):
-        locations = [x for x in getselectedregions() if x] or [config.plugins.samsungtv.region.value]
+        locations = [x for x in getselectedregions() if x] or [config.plugins.samsungtvcockpit.region.value]
         if len(locations) <= 1:
             self.session.openWithCallback(self.endupdateLive, SamsungTVDownload)
             return
@@ -378,7 +378,7 @@ class SamsungTVCockpit(Screen, HelpableScreen):
 
     def loadSetup(self):
         def loadSetupCallback(_result=None):
-            if config.plugins.samsungtv.region.value != self.region:
+            if config.plugins.samsungtvcockpit.region.value != self.region:
                 self.initialise()
                 self.getCategories()
         self.session.openWithCallback(loadSetupCallback, SamsungTVSetup)

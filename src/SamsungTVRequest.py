@@ -8,6 +8,7 @@ from Plugins.SystemPlugins.StreamProxyCockpit import LiveProxyUnmuxed, StreamPro
 import requests
 
 from .Variables import USER_AGENT
+from .CockpitForwardIP import pickForwardIP
 from .CockpitTVDownload import FailureTracker
 
 
@@ -58,7 +59,7 @@ class SamsungTVRequest(FailureTracker):
 
     def getChannels(self, region=None):
         """Fetch channels for region. Returns list of channel dicts."""
-        region = region or config.plugins.samsungtv.region.value
+        region = region or config.plugins.samsungtvcockpit.region.value
         app = self._getChannelsJson()
         if not app:
             return []
@@ -73,7 +74,7 @@ class SamsungTVRequest(FailureTracker):
                 continue  # skip DRM channels
 
             slug = slug_template.format(id=ch_id) if slug_template else ch_id
-            stream_url = self.JMP2_URL_TEMPLATE % slug + self._headerSuffix(app)
+            stream_url = self.JMP2_URL_TEMPLATE % slug + self._headerSuffix(app, ch_id)
 
             result.append({
                 "_id": ch_id,
@@ -94,7 +95,7 @@ class SamsungTVRequest(FailureTracker):
         have on-demand clips), we organize them as VOD categories by group.
         Returns a list of category dicts with items.
         """
-        region = region or config.plugins.samsungtv.region.value
+        region = region or config.plugins.samsungtvcockpit.region.value
         channels = self.getChannels(region)
         if not channels:
             return []
@@ -132,6 +133,22 @@ class SamsungTVRequest(FailureTracker):
             self._stream_headers = self._requestHeaders(app)
         return self._stream_headers
 
+    @staticmethod
+    def forwardHeader(channel_id):
+        """The X-Forwarded-For header that makes the CDN serve the channel from the country it belongs to.
+
+        Some channels (many of the US ones) are geo-blocked: the CDN answers every request for them, the playlists
+        and the segments too, with a 403 unless it sees an address of that country. The id of a channel starts with
+        the code of its region. {} for a region without an address."""
+        ip = pickForwardIP(channel_id[:2].lower())
+        return {"X-Forwarded-For": ip} if ip else {}
+
+    def channelHeaders(self, channel_id):
+        """The request headers of a channel: those of the channels feed plus the address of its country.
+
+        May wait for the feed, so it is for worker threads."""
+        return {**self.streamHeaders(), **self.forwardHeader(channel_id)}
+
     def resolveStreamURL(self, channel_id):
         """The address the stream of a channel really has: the jmp2.uk address after its redirect.
 
@@ -144,7 +161,7 @@ class SamsungTVRequest(FailureTracker):
         slug = slug_template.format(id=channel_id) if slug_template else channel_id
         url = self.JMP2_URL_TEMPLATE % slug
         try:
-            response = self.session.get(url, headers=self.streamHeaders(), timeout=10, stream=True)
+            response = self.session.get(url, headers=self.channelHeaders(channel_id), timeout=10, stream=True)
             response.close()
             response.raise_for_status()
             return response.url
@@ -159,7 +176,7 @@ class SamsungTVRequest(FailureTracker):
             return ""
         slug_template = app.get("slug", "")
         slug = slug_template.format(id=channel_id) if slug_template else channel_id
-        return self.JMP2_URL_TEMPLATE % slug + self._headerSuffix(app)
+        return self.JMP2_URL_TEMPLATE % slug + self._headerSuffix(app, channel_id)
 
     def getProxyURL(self, channel_id):
         """The address of the stream proxy for a channel, to play or record it from.
@@ -167,10 +184,10 @@ class SamsungTVRequest(FailureTracker):
         The real stream address is not looked up here but by the proxy, on one of its own threads, the first time
         the channel is used (and again when it no longer works): this runs on the main thread while Enigma2 zaps."""
         address = StreamProxy.registerChannel(self.SCHEME, channel_id, url_refresher=lambda: self.resolveStreamURL(channel_id),
-                                              headers=self.streamHeaders, refresh_on_failure=True)
+                                              headers=lambda: self.channelHeaders(channel_id), refresh_on_failure=True)
         # Enigma2 itself needs the headers only when the proxy hands it over to the real stream (a stream the proxy
         # can't process), and only if the feed is known by now
-        return address + LiveProxyUnmuxed.header_suffix(self._stream_headers)
+        return address + LiveProxyUnmuxed.header_suffix({**self._stream_headers, **self.forwardHeader(channel_id)})
 
     @staticmethod
     def _requestHeaders(app):
@@ -181,13 +198,14 @@ class SamsungTVRequest(FailureTracker):
         return headers
 
     @classmethod
-    def _headerSuffix(cls, app):
+    def _headerSuffix(cls, app, channel_id):
         """The '#Key=Value&...' suffix eServiceMP3 reads as extra HTTP headers.
 
         The upstream CDN behind the jmp2.uk redirect rejects requests whose User-Agent doesn't match what the
-        official app sends, so the required header from the channels feed must travel with the URL.
+        official app sends, so the required header from the channels feed must travel with the URL. The address of
+        the country of the channel goes with it, see forwardHeader.
         """
-        return LiveProxyUnmuxed.header_suffix(cls._requestHeaders(app))
+        return LiveProxyUnmuxed.header_suffix({**cls._requestHeaders(app), **cls.forwardHeader(channel_id)})
 
     def getURL(self, url, param=None, header=None, life=60 * 15, region=None):
         """Generic cached GET request returning JSON."""
@@ -196,7 +214,7 @@ class SamsungTVRequest(FailureTracker):
         if param is None:
             param = {}
         now = time.time()
-        region = region or config.plugins.samsungtv.region.value
+        region = region or config.plugins.samsungtvcockpit.region.value
         if region not in self.requestCache:
             self.requestCache[region] = {}
         if url in self.requestCache[region] and self.requestCache[region][url][1] > (now - life):
