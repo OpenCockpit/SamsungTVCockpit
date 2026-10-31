@@ -62,7 +62,8 @@ class SamsungTVCockpit(Screen, HelpableScreen):
         self.yellowLabel = _("TMDb Search") if self.mdb == "tmdb" else (_("IMDb Search") if self.mdb else "")
         self["key_green"] = Button()
         self["updated"] = StaticText()
-        self["key_menu"] = Button("Menu")
+        # the buttons bar shows an action key only if its source has a true boolean: StaticText with text, not Button
+        self["key_menu"] = StaticText(_("MENU"))
         self["poster"] = Pixmap()
         self["posterBG"] = Label()
         self["infoBG"] = Label()  # the canvas of the information field: shown with it
