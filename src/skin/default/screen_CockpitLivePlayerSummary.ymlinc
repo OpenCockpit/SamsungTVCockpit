@@ -24,6 +24,8 @@ screen:
         alphatest: "blend"
         borderColor: "FdLcdAmber"
         borderWidth: "2"
+        cornerRadius: "$radius_bar"
+        foregroundColor: "FdLcdWhite"
         position: "0,140"
         render: "Progress"
         size: "$screen_width-4,20"
