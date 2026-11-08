@@ -1,0 +1,390 @@
+# Copyright (C) 2026 by xcentaurix
+# License: GNU General Public License v3.0
+
+import os
+from time import strftime, gmtime, localtime
+from twisted.internet import threads
+
+from Components.ActionMap import HelpableActionMap
+from Components.config import config
+from Components.Button import Button
+from Components.Label import Label
+from Components.Pixmap import Pixmap
+from Components.ScrollLabel import ScrollLabel
+from Components.Sources.StaticText import StaticText
+from Screens.ChoiceBox import ChoiceBox
+from Screens.HelpMenu import HelpableScreen
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from Tools.Directories import fileExists, isPluginInstalled
+from Tools.LoadPixmap import LoadPixmap
+from enigma import BT_KEEP_ASPECT_RATIO, BT_SCALE, BT_HALIGN_CENTER, BT_VALIGN_CENTER, eTimer
+from skin import parameters
+
+from . import _
+from .ConfigInit import REGION_NAMES, getselectedregions
+from .SamsungTVRequest import samsungRequest
+from .SamsungTVDownload import SamsungTVDownload, Silent
+from .PRSUtils import PRSUtils
+from .CockpitTVDownload import loadNoDataLocations
+from .Variables import TIMER_FILE, NODATA_FILE, BOUQUET_FILE
+from .PRSList import PRSList
+from .SamsungTVSetup import SamsungTVSetup
+from .PRSCockpitPlayer import PRSCockpitPlayer
+from .PRSServiceCenter import ServiceCenter
+from .PRSServiceRef import liveReference
+from .Debug import logger
+
+_utils = PRSUtils(config.plugins.samsungtvcockpit)
+downloadPoster = _utils.downloadPoster
+resumePointsInstance = _utils.resumePoints
+
+
+class SamsungTVCockpit(Screen, HelpableScreen):
+
+    def __init__(self, session):
+        self.session = session
+        Screen.__init__(self, session)
+        self.skinName = "SamsungTVCockpit"
+        HelpableScreen.__init__(self)
+        self.service_center = ServiceCenter()
+        self.last_service = None
+
+        self.colors = parameters.get("SamsungTvColors", [])
+
+        self.titlemenu = _("Channel Categories")
+        self["feedlist"] = PRSList([])
+        self["loading"] = Label(_("Loading data... Please wait"))
+        self["vtitle"] = StaticText()
+        self["key_red"] = Button(_("Exit"))
+        self["key_yellow"] = Button()
+        self.mdb = isPluginInstalled("tmdb") and "tmdb" or isPluginInstalled("IMDb") and "imdb"
+        self.yellowLabel = _("TMDb Search") if self.mdb == "tmdb" else (_("IMDb Search") if self.mdb else "")
+        self["key_green"] = Button()
+        self["updated"] = StaticText()
+        # the buttons bar shows an action key only if its source has a true boolean: StaticText with text, not Button
+        self["key_menu"] = StaticText(_("MENU"))
+        self["poster"] = Pixmap()
+        self["posterBG"] = Label()
+        self["infoBG"] = Label()  # the canvas of the information field: shown with it
+        self["info"] = ScrollLabel()
+
+        self["feedlist"].onSelectionChanged.append(self.update_data)
+
+        self.picname = ""
+
+        self["actions"] = HelpableActionMap(
+            self, ["SetupActions", "InfobarChannelSelection", "MenuActions"],
+            {
+                "ok": (self.action, _("Go forward one level including starting playback")),
+                "cancel": (self.exit, _("Go back one level including exiting")),
+                "save": (self.green, _("Create or update Samsung TV Plus live bouquets")),
+                "historyBack": (self.back, _("Go back one level")),
+                "menu": (self.loadSetup, _("Open the plugin configuration screen")),
+            }, -1
+        )
+
+        self["MDBActions"] = HelpableActionMap(
+            self, ["ColorActions"],
+            {
+                "yellow": (self.MDB, _("Search for information in %s") % (_("The Movie Database") if self.mdb == "tmdb" else _("the Internet Movie Database"))),
+            }, -1
+        )
+        self["MDBActions"].setEnabled(False)
+
+        self["InfoNavigationActions"] = HelpableActionMap(
+            self, ["NavigationActions"],
+            {
+                "pageUp": (self["info"].pageUp, _("Scroll the information field")),
+                "pageDown": (self["info"].pageDown, _("Scroll the information field")),
+            }, -1
+        )
+
+        self.updatebutton()
+
+        if self.updatebutton not in Silent.afterUpdate:
+            Silent.afterUpdate.append(self.updatebutton)
+
+        self.updateDataTimer = eTimer()
+        self.updateDataTimer.callback.append(self._do_update_data)
+        self.initialise()
+        self.onLayoutFinish.append(self["info"].hide)
+        self.onLayoutFinish.append(self["infoBG"].hide)
+        self.onLayoutFinish.append(self.getCategories)
+
+    def initialise(self):
+        self.region = config.plugins.samsungtvcockpit.region.value
+        self.films = []
+        self.menu = []
+        self.history = []
+        self.vinfo = ""
+        self.description = ""
+        self["feedlist"].setList([])
+        self["poster"].hide()
+        self["posterBG"].hide()
+        self["info"].setText("")
+        self["infoBG"].hide()
+        self["vtitle"].setText("")
+        self["loading"].show()
+        self.title = _("Samsung TV Plus") + " - " + self.titlemenu
+
+    def update_data(self):
+        self.updateDataTimer.stop()
+        if not (selection := self.getSelection()):
+            return
+        _index, _name, __type, _id = selection
+        self["MDBActions"].setEnabled(False)
+        self["key_yellow"].text = ""
+        if __type == "menu":
+            self["poster"].hide()
+            self["posterBG"].hide()
+            self.updateInfo()
+        else:
+            self.updateDataTimer.start(500, 1)
+
+    def _do_update_data(self):
+        if not (selection := self.getSelection()):
+            return
+        index, _name, __type, _id = selection
+        if __type in {"movie", "channel"}:
+            film = self.films[index]
+            self.description = film[2]
+            self["vtitle"].text = film[1]
+            info = ""
+            if film[3]:
+                info += film[3] + "       "
+            if film[4]:
+                info += film[4] + "       "
+            self["MDBActions"].setEnabled(True)
+            self["key_yellow"].text = self.yellowLabel
+
+            if film[5]:
+                info += strftime("%Hh %Mm", gmtime(int(film[5])))
+            self.vinfo = info
+            self.updateInfo()
+            picname = film[0]
+            self.picname = picname
+            pic = film[6]
+            logger.debug("_do_update_data: picname=%r pic=%r", picname, pic)
+            if pic and len(picname) > 5:
+                self["poster"].hide()
+                self["posterBG"].hide()
+                threads.deferToThread(downloadPoster, pic, picname, self.downloadPostersCallback)
+            else:
+                logger.debug("_do_update_data: skipping download - pic or picname check failed")
+
+    def updateInfo(self):
+        spacer = "\n" if self.vinfo or self.description else ""
+        text = "\n".join([x for x in (self.vinfo, self.description, spacer) if x])
+        self["info"].setText(text)
+        if text:
+            self["infoBG"].show()
+            self["info"].show()
+        else:
+            self["info"].hide()
+            self["infoBG"].hide()
+
+    def downloadPostersCallback(self, filename, name):
+        logger.debug("downloadPostersCallback: filename=%r name=%r self.picname=%r", filename, name, self.picname)
+        if name == self.picname:
+            self.showPoster(filename, name)
+        else:
+            logger.debug("downloadPostersCallback: stale callback, selection moved on")
+
+    def showPoster(self, filename, name):
+        try:
+            if name == self.picname and filename and os.path.isfile(filename):
+                self["poster"].instance.setPixmapScale(BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER)
+                self["poster"].instance.setPixmap(LoadPixmap(filename))
+                self["poster"].show()
+                self["posterBG"].show()
+                logger.debug("showPoster: shown %s", filename)
+            else:
+                logger.debug("showPoster: not showing - name match=%s filename=%r isfile=%s",
+                             name == self.picname, filename, filename and os.path.isfile(filename))
+        except Exception as ex:
+            logger.error("showPoster: %s", ex)
+
+    def getCategories(self):
+        self.lvod = {}
+        threads.deferToThread(samsungRequest.getVODCategories, self.region).addCallback(self.getCategoriesCallback)
+
+    def getCategoriesCallback(self, categories):
+        if not categories:
+            self.session.open(MessageBox, _("There is no data for %s. It may be caused by geo-blocking, or Samsung TV Plus may not be available in your region.") % REGION_NAMES.get(self.region, self.region), type=MessageBox.TYPE_ERROR, timeout=10)
+        else:
+            for category in categories:
+                self.buildlist(category)
+            self.menu.sort(key=lambda x: x.casefold())
+            for _key, items in self.lvod.items():
+                items.sort(key=lambda x: x[1].casefold())
+            entries = []
+            for key in self.menu:
+                entries.append(self["feedlist"].listentry(key, "menu", ""))
+            self["feedlist"].setList(entries)
+        self["loading"].hide()
+
+    def buildlist(self, category):
+        name = category["name"]
+        self.lvod[name] = []
+        self.menu.append(name)
+        items = category.get("items", [])
+        for item in items:
+            itemid = item.get("_id", "")
+            if not itemid:
+                continue
+            itemname = item.get("name", "")
+            itemsummary = item.get("summary", "")
+            itemgenre = item.get("genre", "")
+            itemrating = item.get("rating", "")
+            itemduration = int(item.get("duration", 0) or 0)
+            itemtype = item.get("type", "channel")
+            stream_url = item.get("stream_url", "")
+
+            itemposter = item.get("logo", "")
+            itemimage = itemposter
+            self.lvod[name].append((itemid, itemname, itemsummary, itemgenre, itemrating, itemduration, itemposter, itemimage, itemtype, stream_url))
+
+    def getSelection(self):
+        index = self["feedlist"].getSelectionIndex()
+        if current := self["feedlist"].getCurrent():
+            data = current[0]
+            return index, data[0], data[1], data[2]
+        return None
+
+    def action(self):
+        if not (selection := self.getSelection()):
+            return
+        self.lastAction = self.action
+        index, name, __type, _id = selection
+        menu = []
+        menuact = self.titlemenu
+        if __type == "menu":
+            self.films = self.lvod[self.menu[index]]
+            for x in self.films:
+                sname = x[1]
+                stype = x[8]
+                sid = x[0]
+                menu.append(self["feedlist"].listentry(sname, stype, sid))
+            self["feedlist"].moveToIndex(0)
+            self["feedlist"].setList(menu)
+            self.titlemenu = name
+            self.title = _("Samsung TV Plus") + " - " + self.titlemenu
+            self.history.append((index, menuact))
+        elif __type in {"movie", "channel"}:
+            film = self.films[index]
+            sid = film[0]
+            name = film[1]
+            self.playStream(name, sid, samsungRequest.getProxyURL(sid), film[2], film[5])
+
+    def back(self):
+        if not (selection := self.getSelection()):
+            return
+        self.lastAction = self.back
+        _index, _name, __type, _id = selection
+        menu = []
+        if self.history:
+            hist = self.history[-1][0]
+            histname = self.history[-1][1]
+            if __type in {"movie", "channel"}:
+                for key in self.menu:
+                    menu.append(self["feedlist"].listentry(key, "menu", ""))
+                self["vtitle"].text = ""
+                self.vinfo = ""
+                self.description = ""
+            self["feedlist"].setList(menu)
+            self.history.pop()
+            self["feedlist"].moveToIndex(hist)
+            self.titlemenu = histname
+            self.title = _("Samsung TV Plus") + " - " + self.titlemenu
+            if not self.history:
+                self["poster"].hide()
+
+    def playStream(self, name, sid, url=None, description="", duration=0):
+        if url and name:
+            reference = liveReference(BOUQUET_FILE % self.region, name, url)
+            if "m3u8" in url.lower() or "jmp2" in url.lower() or "127.0.0.1" in url:
+                self.service_center.setMovie(name, description, duration)
+                self.last_service = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+                self.session.openWithCallback(self._playerClosed, PRSCockpitPlayer, reference, sid, resumePointsInstance, self.service_center, config.plugins.samsungtvcockpit, live=True)
+
+    def _playerClosed(self, *_args):
+        if self.last_service:
+            self.session.nav.playService(self.last_service)
+        self["feedlist"].refresh()  # pick up the resume point saved on leaving the player
+
+    def green(self):
+        locations = [x for x in getselectedregions() if x] or [config.plugins.samsungtvcockpit.region.value]
+        if len(locations) <= 1:
+            self.session.openWithCallback(self.endupdateLive, SamsungTVDownload)
+            return
+        choices = [(_("All"), None)] + [(REGION_NAMES.get(cc, cc), cc) for cc in locations]
+        self.session.openWithCallback(
+            self.greenChoice,
+            ChoiceBox,
+            title=_("Select a Live-TV bouquet to update"),
+            list=choices,
+            keys=[]
+        )
+
+    def greenChoice(self, result=None):
+        if result is None:
+            return
+        self.session.openWithCallback(self.endupdateLive, SamsungTVDownload, locations=[result[1]] if result[1] else None)
+
+    def endupdateLive(self, _ret=None):
+        if _ret:
+            regions = ", ".join(REGION_NAMES.get(cc, cc) for cc in _ret)
+            self.session.openWithCallback(self.updatebutton, MessageBox, _("The Samsung TV Plus bouquets for %s in your channel list have been updated.\n\nThey will now be rebuilt automatically every 5 hours.") % regions, type=MessageBox.TYPE_INFO, timeout=10)
+        else:
+            self.updatebutton()
+
+    def updatebutton(self, _ret=None):
+        with open("/etc/enigma2/bouquets.tv", "r", encoding="utf-8") as f:
+            bouquets = f.read()
+        nodata = loadNoDataLocations(NODATA_FILE)
+        # A selected region missing its bouquet is only "still needs updating" if
+        # we haven't actually tried it yet - one that came back empty last run (e.g.
+        # geo-blocked) is settled, since pressing GREEN again wouldn't change that.
+        if fileExists(TIMER_FILE) and all(((BOUQUET_FILE % cc) in bouquets or cc in nodata) for cc in [x for x in getselectedregions() if x]):
+            with open(TIMER_FILE, "r", encoding="utf-8") as f:
+                last = float(f.read().replace("\n", "").replace("\r", ""))
+            updated = strftime(" %x %H:%M", localtime(int(last)))
+            self["key_green"].text = _("Update Live-TV Bouquet")
+            self["updated"].text = _("Live-TV Bouquet last updated:") + updated
+        elif "samsungtv" in bouquets:
+            self["key_green"].text = _("Update Live-TV Bouquet")
+            self["updated"].text = _("Live-TV Bouquet needs updating. Press GREEN.")
+        else:
+            self["key_green"].text = _("Create Live-TV Bouquet")
+            self["updated"].text = ""
+
+    def exit(self, *_args, **_kwargs):
+        if self.history:
+            self.back()
+        else:
+            self.close()
+
+    def MDB(self):
+        if not (selection := self.getSelection()):
+            return
+        _index, name, __type, _id = selection
+        if __type in {"movie", "channel"} and self.mdb:
+            if self.mdb == "tmdb":
+                from Plugins.Extensions.tmdb.tmdb import tmdbScreen
+                self.session.open(tmdbScreen, name, 2)
+            else:
+                from Plugins.Extensions.IMDb.plugin import IMDB
+                self.session.open(IMDB, name, False)
+
+    def loadSetup(self):
+        def loadSetupCallback(_result=None):
+            if config.plugins.samsungtvcockpit.region.value != self.region:
+                self.initialise()
+                self.getCategories()
+        self.session.openWithCallback(loadSetupCallback, SamsungTVSetup)
+
+    def close(self, *_args, **_kwargs):
+        if self.updatebutton in Silent.afterUpdate:
+            Silent.afterUpdate.remove(self.updatebutton)
+        Screen.close(self)

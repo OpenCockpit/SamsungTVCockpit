@@ -1,0 +1,79 @@
+# Copyright (C) 2026 by xcentaurix
+# License: GNU General Public License v3.0
+
+from Components.config import config
+from Plugins.Plugin import PluginDescriptor
+from Plugins.SystemPlugins.StreamProxyCockpit import StreamProxy
+from twisted.internet import threads
+
+from .PluginUpgrade import checkPluginUpdateAndOpen
+from . import _
+from . import ConfigInit  # noqa: F401, pylint: disable=unused-import
+from .SamsungTVRequest import samsungRequest, resolveStream
+from .SamsungTVDownload import SamsungTVDownload, Silent
+from .SamsungTVCockpit import SamsungTVCockpit
+from .PlaybackWatchdog import start as startPlaybackWatchdog
+from .SkinUtils import loadPluginSkin
+from .Version import PLUGIN, VERSION
+from .Debug import logger
+
+
+loadPluginSkin(PLUGIN)
+
+# The bouquets address a channel as samsungtv://<id>. StreamProxyCockpit resolves such a service when it is played or
+# recorded and installs its service extensions while the plugin is loaded (see StreamProxy.registerProvider).
+StreamProxy.registerProvider(samsungRequest.SCHEME, resolveStream)
+
+
+def sessionstart(reason, session, **_kwargs):  # pylint: disable=unused-argument
+    logger.info("+++ Version: %s starts...", VERSION)
+    Silent.init(session)
+    startPlaybackWatchdog(session)
+    threads.deferToThread(samsungRequest._getChannelsJson)
+
+
+def Download_SamsungTV(session, **_kwargs):
+    session.open(SamsungTVDownload)
+
+
+def system(session, **_kwargs):
+    checkPluginUpdateAndOpen(
+        session, "enigma2-plugin-extensions-samsungtvcockpit", "SamsungTVCockpit",
+        SamsungTVCockpit, config.plugins.samsungtvcockpit.auto_update_check,
+        also_check=(("enigma2-plugin-systemplugins-streamproxycockpit", "StreamProxyCockpit"),))
+
+
+def Plugins(**_kwargs):
+    descriptors = [
+        PluginDescriptor(
+            name=_("SamsungTVCockpit"),
+            where=PluginDescriptor.WHERE_PLUGINMENU,
+            icon="plugin.png",
+            description=_("Live-TV-Bouquet Management"),
+            fnc=system,
+            needsRestart=True
+        ),
+        PluginDescriptor(
+            name=_("Download Samsung TV Plus bouquet, picons and EPG"),
+            where=PluginDescriptor.WHERE_EXTENSIONSMENU,
+            fnc=Download_SamsungTV,
+            needsRestart=True
+        ),
+        PluginDescriptor(
+            name=_("Silently download Samsung TV Plus"),
+            where=PluginDescriptor.WHERE_SESSIONSTART,
+            fnc=sessionstart,
+            needsRestart=True
+        )
+    ]
+    try:
+        descriptors += [
+            PluginDescriptor(
+                where=PluginDescriptor.WHERE_SKINCHANGE,
+                fnc=loadPluginSkin
+            )
+        ]
+    except Exception:
+        pass
+
+    return descriptors

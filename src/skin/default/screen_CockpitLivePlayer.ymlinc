@@ -1,0 +1,9 @@
+screen:
+  backgroundColor: "md_transparent"
+  name: "CockpitLivePlayer"
+  position: "center,center"
+  size: "1920,1080"
+  children:
+    - xmlinc:
+        file: "screenpart_LivePlayer.ymlinc"
+        position: "38,860"

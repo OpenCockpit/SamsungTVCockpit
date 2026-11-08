@@ -1,0 +1,16 @@
+skin:
+  children:
+    - xmlinc:
+        file: "globals.ymlinc"
+    - xmlinc:
+        file: "display_globals.ymlinc"
+    - xmlinc:
+        file: "screen_PRSPlugin.ymlinc"
+    - xmlinc:
+        file: "screen_PRSDownloadProgress.ymlinc"
+    - xmlinc:
+        file: "screen_CockpitLivePlayer.ymlinc"
+    - xmlinc:
+        file: "screen_CockpitLivePlayerSummary.ymlinc"
+    - xmlinc:
+        file: "screen_ScreenPVRState.ymlinc"
