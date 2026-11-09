@@ -111,7 +111,7 @@ class SamsungTVDownloadBase(TVDownloadBase):
         return samsungRequest.failure("json")   # one file for all regions
 
     def _bouquetName(self, cc):
-        return BOUQUET_NAME % REGION_NAMES.get(cc, cc).upper()
+        return BOUQUET_NAME % REGION_NAMES.get(cc, cc)
 
     def _importGuide(self, cc):
         """Import EPG events from the i.mjh.nz XML feed."""
