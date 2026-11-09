@@ -21,10 +21,8 @@ screen:
               type: "EventName"
               text: "Name"
     - widget:
-        alphatest: "blend"
         borderColor: "FdLcdAmber"
         borderWidth: "2"
-        cornerRadius: "$radius_bar"
         foregroundColor: "FdLcdWhite"
         position: "0,140"
         render: "Progress"
