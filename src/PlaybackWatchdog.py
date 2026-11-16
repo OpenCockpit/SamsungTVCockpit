@@ -1,4 +1,4 @@
-# Copyright (C) 2026 by xcentaurix
+# Copyright (C) 2018-2026 by xcentaurix
 # License: GNU General Public License v3.0
 
 """Retries a Samsung TV Plus zap once if gstreamer comes up with no playable tracks.
