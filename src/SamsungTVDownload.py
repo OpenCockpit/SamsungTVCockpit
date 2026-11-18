@@ -5,7 +5,6 @@ import calendar
 import os
 import re
 import time
-import zlib
 
 from Components.ActionMap import ActionMap
 from Components.config import config
@@ -156,17 +155,18 @@ class SamsungTVDownloadBase(TVDownloadBase):
         """Re-fetch and re-import EPG for *cc* without touching channels/picons/bouquet.
 
         Rebuilds channelsList/categories/usedServiceIds first purely so
-        _importGuide's channels_map lines up with the live bouquet - SID
-        allocation in buildM3U is deterministic from the channel list, so this
+        _importGuide's channels_map lines up with the live bouquet - a channel
+        keeps the SID it was given (TVDownloadBase._assignServiceId), so this
         reproduces the same SIDs the last full update wrote. Nothing gets
         written to eDVBDB or the picon folder here.
         """
         self.tsid = self.TSIDS.get(cc, "0")
-        self.usedServiceIds = set()
+        self._beginServiceIds()
         self.channelsList.clear()
         self.categories.clear()
         for channel in sorted(self._fetchChannels(cc), key=lambda x: x["number"]):
             self.buildM3U(channel)
+        self._saveServiceIds()
         self._importGuide(cc)
 
     def _buildBouquetEntry(self, key, chitem):
@@ -205,12 +205,8 @@ class SamsungTVDownloadBase(TVDownloadBase):
             self.channelsList[group] = []
             self.categories.append(group)
 
-        sid = int(channel["number"])
-        if sid <= 0:
-            sid = (zlib.crc32(_id.encode("utf-8")) & 0xFFFF) or 1
-        while sid in self.usedServiceIds:
-            sid = (sid + 1) & 0xFFFF or 1
-        self.usedServiceIds.add(sid)
+        # the id the channel had (see TVDownloadBase._assignServiceId), else the number of Samsung TV Plus
+        sid = self._assignServiceId(_id, int(channel["number"]))
         number = f"{sid:X}"
 
         self.channelsList[group].append((str(number), _id, channel["name"], logo, _id))
